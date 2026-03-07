@@ -1,0 +1,1574 @@
+<%+header%>
+
+<style>
+/* ── ISP Recovery Wizard Styles ─────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@400;600;700&display=swap');
+
+:root {
+  --bg:       #0a0e14;
+  --panel:    #0f1520;
+  --border:   #1e3a5f;
+  --accent:   #00d4ff;
+  --accent2:  #00ff9d;
+  --warn:     #ff6b35;
+  --danger:   #ff3355;
+  --text:     #c8d8e8;
+  --dim:      #4a6080;
+  --success:  #00ff9d;
+  --mono:     'Share Tech Mono', monospace;
+  --head:     'Rajdhani', sans-serif;
+}
+
+#isp-wizard-wrap * { box-sizing: border-box; }
+
+#isp-wizard-wrap {
+  font-family: var(--mono);
+  background: var(--bg);
+  color: var(--text);
+  min-height: 80vh;
+  padding: 24px;
+  border-radius: 4px;
+  position: relative;
+  overflow: hidden;
+}
+
+#isp-wizard-wrap::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0,212,255,0.015) 2px,
+    rgba(0,212,255,0.015) 4px
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── Header ── */
+.isp-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 32px;
+  position: relative;
+  z-index: 1;
+}
+
+.isp-logo {
+  width: 48px;
+  height: 48px;
+  border: 2px solid var(--accent);
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  background: rgba(0,212,255,0.1);
+  flex-shrink: 0;
+  animation: pulse-border 2s infinite;
+}
+
+@keyframes pulse-border {
+  0%,100% { box-shadow: 0 0 0 0 rgba(0,212,255,0.4); }
+  50%      { box-shadow: 0 0 0 8px rgba(0,212,255,0); }
+}
+
+.isp-title h1 {
+  font-family: var(--head);
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--accent);
+  margin: 0;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.isp-title p {
+  margin: 2px 0 0;
+  color: var(--dim);
+  font-size: 12px;
+  letter-spacing: 1px;
+}
+
+/* ── Step Progress Bar ── */
+.step-track {
+  display: flex;
+  align-items: center;
+  margin-bottom: 32px;
+  position: relative;
+  z-index: 1;
+}
+
+.step-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  position: relative;
+}
+
+.step-item:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  top: 16px;
+  left: 50%;
+  width: 100%;
+  height: 2px;
+  background: var(--border);
+  transition: background 0.5s;
+}
+
+.step-item.done:not(:last-child)::after,
+.step-item.active:not(:last-child)::after {
+  background: var(--accent);
+}
+
+.step-num {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 2px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: bold;
+  background: var(--bg);
+  transition: all 0.3s;
+  position: relative;
+  z-index: 1;
+  color: var(--dim);
+}
+
+.step-item.active .step-num {
+  border-color: var(--accent);
+  color: var(--accent);
+  box-shadow: 0 0 12px rgba(0,212,255,0.5);
+  background: rgba(0,212,255,0.1);
+}
+
+.step-item.done .step-num {
+  border-color: var(--accent2);
+  background: var(--accent2);
+  color: var(--bg);
+}
+
+.step-label {
+  font-size: 10px;
+  margin-top: 6px;
+  color: var(--dim);
+  text-align: center;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.step-item.active .step-label { color: var(--accent); }
+.step-item.done  .step-label  { color: var(--accent2); }
+
+/* ── Panel / Cards ── */
+.wizard-panel {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 24px;
+  margin-bottom: 20px;
+  position: relative;
+  z-index: 1;
+  display: none;
+}
+
+.wizard-panel.active { display: block; animation: fadeIn 0.3s ease; }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.panel-title {
+  font-family: var(--head);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.panel-title .icon { font-size: 20px; }
+
+/* ── Info blocks ── */
+.info-box {
+  background: rgba(0,212,255,0.05);
+  border-left: 3px solid var(--accent);
+  padding: 12px 16px;
+  margin: 12px 0;
+  border-radius: 0 4px 4px 0;
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.warn-box {
+  background: rgba(255,107,53,0.08);
+  border-left: 3px solid var(--warn);
+  padding: 12px 16px;
+  margin: 12px 0;
+  border-radius: 0 4px 4px 0;
+  font-size: 13px;
+  color: var(--warn);
+}
+
+/* ── Interface display ── */
+.iface-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+  margin: 16px 0;
+}
+
+.iface-card {
+  background: rgba(0,212,255,0.04);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 12px 16px;
+}
+
+.iface-card label {
+  font-size: 10px;
+  color: var(--dim);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  display: block;
+}
+
+.iface-card .val {
+  font-size: 16px;
+  color: var(--accent2);
+  font-family: var(--mono);
+  margin-top: 4px;
+}
+
+/* ── Capture animation ── */
+.capture-status {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin: 20px 0;
+}
+
+.radar {
+  width: 64px;
+  height: 64px;
+  border: 2px solid var(--accent);
+  border-radius: 50%;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.radar::before {
+  content: '';
+  position: absolute;
+  inset: 4px;
+  border: 1px solid rgba(0,212,255,0.3);
+  border-radius: 50%;
+}
+
+.radar-sweep {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 50%;
+  height: 2px;
+  background: linear-gradient(to right, var(--accent), transparent);
+  transform-origin: left center;
+  animation: sweep 2s linear infinite;
+}
+
+@keyframes sweep {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+.radar.idle .radar-sweep { display: none; }
+.radar.idle { border-color: var(--border); }
+
+.capture-info { flex: 1; }
+
+.capture-info h3 {
+  font-family: var(--head);
+  margin: 0 0 6px;
+  color: var(--accent);
+  font-size: 16px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* ── Timer ── */
+.timer-bar-wrap {
+  background: rgba(0,0,0,0.4);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  height: 8px;
+  margin: 8px 0;
+  overflow: hidden;
+}
+
+.timer-bar {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent2), var(--accent));
+  transition: width 1s linear;
+  border-radius: 2px;
+  box-shadow: 0 0 8px var(--accent);
+}
+
+.timer-text {
+  font-size: 12px;
+  color: var(--dim);
+}
+
+/* ── Results ── */
+.result-section {
+  margin: 16px 0;
+}
+
+.result-section h4 {
+  font-family: var(--head);
+  color: var(--accent);
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin: 0 0 10px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--border);
+}
+
+.result-grid {
+  display: grid;
+  grid-template-columns: 160px 1fr;
+  gap: 6px 16px;
+}
+
+.result-key {
+  color: var(--dim);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+}
+
+.result-val {
+  font-family: var(--mono);
+  font-size: 14px;
+  color: var(--accent2);
+  word-break: break-all;
+}
+
+.result-val.na { color: var(--dim); font-style: italic; }
+.result-val.warn { color: var(--warn); }
+
+.auth-badge {
+  display: inline-block;
+  padding: 3px 12px;
+  border-radius: 2px;
+  font-size: 13px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.auth-badge.pppoe  { background: rgba(0,212,255,0.15); color: var(--accent); border: 1px solid var(--accent); }
+.auth-badge.dhcp   { background: rgba(0,255,157,0.12); color: var(--accent2); border: 1px solid var(--accent2); }
+.auth-badge.static { background: rgba(255,107,53,0.12); color: var(--warn); border: 1px solid var(--warn); }
+.auth-badge.unknown { background: rgba(74,96,128,0.2); color: var(--dim); border: 1px solid var(--dim); }
+
+/* ── Buttons ── */
+.btn-row {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+  flex-wrap: wrap;
+}
+
+.btn {
+  font-family: var(--mono);
+  font-size: 13px;
+  padding: 10px 24px;
+  border-radius: 3px;
+  border: none;
+  cursor: pointer;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  transition: all 0.2s;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+.btn-primary {
+  background: var(--accent);
+  color: var(--bg);
+  font-weight: bold;
+}
+
+.btn-primary:not(:disabled):hover {
+  background: #33ddff;
+  box-shadow: 0 0 16px rgba(0,212,255,0.5);
+}
+
+.btn-success {
+  background: var(--accent2);
+  color: var(--bg);
+  font-weight: bold;
+}
+
+.btn-success:not(:disabled):hover {
+  box-shadow: 0 0 16px rgba(0,255,157,0.5);
+}
+
+.btn-danger {
+  background: transparent;
+  color: var(--danger);
+  border: 1px solid var(--danger);
+}
+
+.btn-danger:not(:disabled):hover {
+  background: rgba(255,51,85,0.1);
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--dim);
+  border: 1px solid var(--border);
+}
+
+.btn-ghost:not(:disabled):hover {
+  color: var(--text);
+  border-color: var(--text);
+}
+
+/* ── Terminal log ── */
+.terminal {
+  background: #060a0f;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  padding: 12px;
+  font-size: 11px;
+  font-family: var(--mono);
+  color: #4aff7a;
+  max-height: 180px;
+  overflow-y: auto;
+  line-height: 1.6;
+  margin-top: 12px;
+}
+
+.terminal .t-dim  { color: var(--dim); }
+.terminal .t-warn { color: var(--warn); }
+.terminal .t-err  { color: var(--danger); }
+
+/* ── Status indicator ── */
+.status-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-right: 8px;
+}
+
+.status-dot.green { background: var(--accent2); box-shadow: 0 0 6px var(--accent2); }
+.status-dot.blue  { background: var(--accent);  box-shadow: 0 0 6px var(--accent); animation: blink 1s infinite; }
+.status-dot.red   { background: var(--danger);  box-shadow: 0 0 6px var(--danger); }
+.status-dot.grey  { background: var(--dim); }
+
+@keyframes blink {
+  0%,100% { opacity: 1; } 50% { opacity: 0.3; }
+}
+
+/* ── Auto-test attempt list ── */
+.at-row {
+  display: grid;
+  grid-template-columns: 28px 1fr 80px 70px;
+  gap: 6px 12px;
+  align-items: center;
+  padding: 7px 10px;
+  border-radius: 3px;
+  margin-bottom: 4px;
+  font-size: 13px;
+  background: rgba(0,0,0,0.2);
+  border: 1px solid var(--border);
+  transition: all 0.3s;
+}
+
+.at-row.running {
+  border-color: var(--accent);
+  background: rgba(0,212,255,0.06);
+  box-shadow: 0 0 8px rgba(0,212,255,0.15);
+}
+
+.at-row.pass {
+  border-color: var(--accent2);
+  background: rgba(0,255,157,0.07);
+}
+
+.at-row.fail {
+  border-color: rgba(255,51,85,0.3);
+  opacity: 0.6;
+}
+
+.at-row.pending { opacity: 0.35; }
+
+.at-num { color: var(--dim); font-size: 11px; text-align:right; }
+.at-label { color: var(--text); }
+.at-label.running { color: var(--accent); }
+.at-label.pass    { color: var(--accent2); }
+
+.at-status {
+  font-size: 12px;
+  text-align: center;
+  padding: 2px 8px;
+  border-radius: 2px;
+  font-weight: bold;
+}
+
+.at-status.running { color: var(--accent);  }
+.at-status.pass    { color: var(--accent2); }
+.at-status.fail    { color: var(--danger);  }
+.at-status.pending { color: var(--dim);     }
+
+.at-rtt { font-size: 11px; color: var(--dim); font-family: var(--mono); }
+.at-rtt.pass { color: var(--accent2); }
+
+/* ── Edit form ── */
+.edit-grid {
+  display: grid;
+  grid-template-columns: 160px 1fr;
+  gap: 10px 16px;
+  align-items: center;
+}
+
+.edit-grid label {
+  font-size: 12px;
+  color: var(--dim);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  line-height: 1.3;
+}
+
+.edit-input {
+  background: #060a0f;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  color: var(--accent2);
+  font-family: var(--mono);
+  font-size: 14px;
+  padding: 7px 10px;
+  width: 100%;
+  max-width: 320px;
+  transition: border-color 0.2s;
+}
+
+.edit-input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 8px rgba(0,212,255,0.2);
+}
+
+.edit-input::placeholder { color: var(--dim); }
+
+.conf-badge {
+  font-size: 11px;
+  margin-left: 8px;
+  padding: 2px 8px;
+  border-radius: 2px;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+.conf-badge.high   { color: var(--accent2); border: 1px solid var(--accent2); background: rgba(0,255,157,0.08); }
+.conf-badge.medium { color: var(--warn);    border: 1px solid var(--warn);    background: rgba(255,107,53,0.08); }
+.conf-badge.low    { color: var(--danger);  border: 1px solid var(--danger);  background: rgba(255,51,85,0.08); }
+.conf-badge.calc   { color: var(--accent);  border: 1px solid var(--accent);  background: rgba(0,212,255,0.08); }
+
+.auth-radio { cursor: pointer; display: inline-flex; align-items: center; gap: 8px; }
+.auth-radio input { display: none; }
+.auth-radio input:checked + .auth-badge { box-shadow: 0 0 12px rgba(0,212,255,0.4); }
+
+/* ── Scrollbar ── */
+#isp-wizard-wrap ::-webkit-scrollbar { width: 6px; }
+#isp-wizard-wrap ::-webkit-scrollbar-track { background: var(--bg); }
+#isp-wizard-wrap ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+/* ── Responsive ── */
+@media (max-width: 600px) {
+  .step-label { display: none; }
+  .result-grid { grid-template-columns: 1fr; }
+  .btn-row { flex-direction: column; }
+  .btn { width: 100%; }
+}
+</style>
+
+<div id="isp-wizard-wrap">
+
+  <!-- Header -->
+  <div class="isp-header">
+    <div class="isp-logo">🔍</div>
+    <div class="isp-title">
+      <h1>ISP Credential Recovery</h1>
+      <p>CAPTURE &bull; ANALYSE &bull; APPLY — Universal WAN Credential Recovery for OpenWrt</p>
+    </div>
+  </div>
+
+  <!-- Step progress -->
+  <div class="step-track" id="stepTrack">
+    <div class="step-item active" id="step-0">
+      <div class="step-num">1</div>
+      <div class="step-label">Detect</div>
+    </div>
+    <div class="step-item" id="step-1">
+      <div class="step-num">2</div>
+      <div class="step-label">Prepare</div>
+    </div>
+    <div class="step-item" id="step-2">
+      <div class="step-num">3</div>
+      <div class="step-label">Connect</div>
+    </div>
+    <div class="step-item" id="step-3">
+      <div class="step-num">4</div>
+      <div class="step-label">Capture</div>
+    </div>
+    <div class="step-item" id="step-4">
+      <div class="step-num">5</div>
+      <div class="step-label">Auto-Test</div>
+    </div>
+    <div class="step-item" id="step-5">
+      <div class="step-num">6</div>
+      <div class="step-label">Results</div>
+    </div>
+    <div class="step-item" id="step-6">
+      <div class="step-num">7</div>
+      <div class="step-label">Apply</div>
+    </div>
+  </div>
+
+  <!-- ── STEP 0: Welcome & port assignment ── -->
+  <div class="wizard-panel active" id="panel-0">
+    <div class="panel-title"><span class="icon">🖧</span> Step 1 — Before You Begin</div>
+
+    <div class="info-box">
+      This tool recovers your ISP connection credentials by briefly connecting your ISP router
+      to a spare LAN port and capturing the authentication traffic.<br><br>
+      <strong>Port assignment — important:</strong><br><br>
+      <div style="display:grid; grid-template-columns:auto 1fr; gap:8px 16px; margin:8px 0">
+        <span style="color:var(--accent2); font-size:20px; text-align:center">🔴</span>
+        <span><strong style="color:var(--accent2)">LAN 1</strong> — reserved for the ISP router capture cable.
+        Do <strong>not</strong> plug anything else into LAN 1.</span>
+        <span style="color:var(--accent); font-size:20px; text-align:center">💻</span>
+        <span><strong style="color:var(--accent)">LAN 2 or LAN 3</strong> — use one of these for your laptop
+        so you can monitor progress in this wizard while the capture runs.</span>
+        <span style="color:var(--dim); font-size:20px; text-align:center">📶</span>
+        <span><strong style="color:var(--dim)">WiFi</strong> — also fine for monitoring if you prefer.</span>
+      </div>
+    </div>
+
+    <div class="warn-box">
+      ⚠ LAN 1 will be temporarily taken offline during capture so the ISP router detects a fresh
+      connection and re-authenticates. LAN 2, LAN 3 and WiFi are <strong>not affected</strong>.
+      Your existing WAN connection is also unaffected until the final Apply step.
+    </div>
+
+    <div style="margin:16px 0; font-size:13px; color:var(--dim)">
+      <strong>You will also need:</strong>
+      <ul style="margin:8px 0 0 16px; line-height:2.2">
+        <li>Your ISP router (powered on, or ready to be powered on)</li>
+        <li>An Ethernet cable long enough to reach from LAN 1 to the ISP router's WAN port</li>
+        <li>This laptop/device connected to LAN 2, LAN 3, or WiFi</li>
+      </ul>
+    </div>
+
+    <div id="iface-display" style="display:none; margin:16px 0">
+      <div class="iface-grid">
+        <div class="iface-card">
+          <label>WAN Interface</label>
+          <div class="val" id="disp-wan">—</div>
+        </div>
+        <div class="iface-card" style="border-color:var(--accent2)">
+          <label style="color:var(--accent2)">Capture Port (fixed)</label>
+          <div class="val" style="color:var(--accent2); font-size:20px">lan1</div>
+        </div>
+        <div class="iface-card">
+          <label>LAN Bridge</label>
+          <div class="val" id="disp-lan">—</div>
+        </div>
+      </div>
+      <div id="lan1-warn" style="display:none" class="warn-box">
+        ⚠ <strong>lan1 was not found</strong> on this router. Your OpenWrt build may use different
+        port names (e.g. eth1, eth2). Check <em>Network → Switch</em> in LuCI to find the correct
+        port name, then rename it to lan1 or ask for support.
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-primary" id="btnDetect" onclick="doDetect()">⚡ Check Interfaces &amp; Continue</button>
+    </div>
+    <div class="terminal" id="log-0" style="display:none"></div>
+  </div>
+
+  <!-- ── STEP 1: Prepare / bridge ── -->
+  <div class="wizard-panel" id="panel-1">
+    <div class="panel-title"><span class="icon">🔗</span> Step 2 — Prepare LAN 1 for Capture</div>
+    <div class="info-box">
+      Before you plug the ISP router in, LAN 1 needs to be taken offline.<br><br>
+      <strong>Why?</strong> When the ISP router's cable is first plugged in, it detects a live link
+      and begins authenticating with the ISP — sending its credentials across the wire.
+      That authentication handshake is exactly what we need to capture.<br><br>
+      If LAN 1 is already live when you plug in, the ISP router may have already authenticated
+      before the capture starts and we'll miss it. Taking the port down first means the ISP router
+      sees a fresh connection the moment we bring it back up — guaranteed cold start.<br><br>
+      <strong>Nothing else on your network is affected</strong> — LAN 2, LAN 3 and WiFi stay fully online.
+    </div>
+    <div id="prep-status" style="font-size:13px; color:var(--dim); margin:12px 0">Ready to prepare LAN 1...</div>
+    <div class="btn-row">
+      <button class="btn btn-primary" id="btnSetup" onclick="doSetup()">🔧 Take LAN 1 Offline &amp; Prepare</button>
+      <button class="btn btn-ghost" onclick="goStep(0)">← Back</button>
+    </div>
+    <div class="terminal" id="log-1" style="display:none"></div>
+  </div>
+
+  <!-- ── STEP 2: Connect ISP router ── -->
+  <div class="wizard-panel" id="panel-2">
+    <div class="panel-title"><span class="icon">🔌</span> Step 3 — Connect the ISP Router</div>
+
+    <div style="text-align:center; padding:16px 0 8px">
+      <div style="font-size:56px; margin-bottom:10px">🖥️ ——— 🔌 ——— 📦</div>
+      <div style="font-family:var(--head); font-size:13px; letter-spacing:2px; color:var(--dim)">
+        YOUR ROUTER (LAN 1) &nbsp;&nbsp;&nbsp;&nbsp; CABLE &nbsp;&nbsp;&nbsp;&nbsp; ISP ROUTER (WAN PORT)
+      </div>
+    </div>
+
+    <div class="info-box">
+      <strong style="color:var(--accent)">Do this now, in order:</strong><br><br>
+      <div style="display:grid; grid-template-columns:24px 1fr; gap:10px; line-height:1.6">
+        <span style="color:var(--accent2); font-weight:bold; text-align:center">1</span>
+        <span>Take an Ethernet cable and plug one end into <strong style="color:var(--accent2)">LAN 1</strong>
+        on your OpenWrt router. LAN 1 is currently offline so the link light will not come on yet — that's normal.</span>
+
+        <span style="color:var(--accent2); font-weight:bold; text-align:center">2</span>
+        <span>Plug the other end into the <strong>WAN</strong> or <strong>Internet</strong> port on your
+        ISP router — this is usually a different colour from the LAN ports, often blue or yellow.</span>
+
+        <span style="color:var(--accent2); font-weight:bold; text-align:center">3</span>
+        <span>If the ISP router has been running for a while, <strong>reboot it now</strong> (unplug
+        the power, wait 5 seconds, plug back in). A fresh boot forces it to re-authenticate from scratch,
+        which gives us the best chance of capturing the credentials cleanly.</span>
+
+        <span style="color:var(--accent2); font-weight:bold; text-align:center">4</span>
+        <span>Wait for the ISP router's lights to settle (about 10–15 seconds after power-on),
+        then click the button below. The capture will start the moment you click.</span>
+      </div>
+    </div>
+
+    <div class="warn-box">
+      ⚠ <strong>Do not click until the ISP router is booted and the cable is plugged in.</strong>
+      The capture only runs for 30 seconds — if the ISP router is still booting when you click,
+      you may miss the authentication window.
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-primary" id="btnCapture" onclick="doCapture()">▶ ISP Router Ready — Start Capture!</button>
+      <button class="btn btn-ghost" onclick="goStep(1)">← Back</button>
+    </div>
+  </div>
+
+  <!-- ── STEP 3: Capturing ── -->
+  <div class="wizard-panel" id="panel-3">
+    <div class="panel-title"><span class="icon">📡</span> Step 4 — Capturing Traffic</div>
+
+    <div class="capture-status">
+      <div class="radar" id="radarAnim">
+        <div class="radar-sweep"></div>
+      </div>
+      <div class="capture-info">
+        <h3 id="cap-status-text">Waiting for ISP router...</h3>
+        <p id="cap-status-sub" style="color:var(--dim); font-size:12px; margin:4px 0">
+          Capturing PPPoE, DHCP, VLAN, ARP and authentication packets
+        </p>
+        <div class="timer-bar-wrap">
+          <div class="timer-bar" id="timerBar" style="width:100%"></div>
+        </div>
+        <div class="timer-text" id="timerText">30 seconds remaining</div>
+      </div>
+    </div>
+
+    <div class="info-box" style="font-size:12px">
+      <span class="status-dot blue"></span>Monitoring for:
+      PPPoE authentication (PADI/PADS/CHAP/PAP) &bull;
+      DHCP address assignment &bull;
+      VLAN 802.1Q tags &bull;
+      Static IPoE / ARP announcements &bull;
+      MAC address of ISP router
+    </div>
+
+    <div class="terminal" id="log-3">Capture started — monitoring port...</div>
+
+    <div class="btn-row" style="margin-top:16px">
+      <button class="btn btn-ghost btn-danger" onclick="doStopEarly()">⏹ Stop Early</button>
+    </div>
+  </div>
+
+  <!-- ── STEP 4: Auto-Test ── -->
+  <div class="wizard-panel" id="panel-4">
+    <div class="panel-title"><span class="icon">🔬</span> Step 5 — Auto-Testing Connection</div>
+
+    <div class="info-box">
+      LAN 1 has been released and your laptop's connection is restored.<br><br>
+      The tool is now automatically testing your WAN port with the settings it captured,
+      trying each combination in order — most likely first.<br><br>
+      <strong>Why multiple attempts?</strong> Some ISPs require MAC address cloning (your old
+      router's MAC is registered with them). Some use a VLAN tag. Some need both. Rather than
+      asking you to figure that out, the tool just tries each combination until one connects.<br><br>
+      <strong style="color:var(--warn)">⏱ How long will this take?</strong>
+      Each attempt waits <strong>30 seconds</strong> for the interface to come up, then pings
+      8.8.8.8. In the worst case (all combinations tried) this could take up to
+      <strong id="at-max-time">several minutes</strong> — you can see exactly how many are queued
+      in the list below. <strong>You don't need to do anything</strong> — just wait.
+    </div>
+
+    <!-- Overall progress -->
+    <div style="margin:16px 0">
+      <div style="display:flex; justify-content:space-between; font-size:12px; color:var(--dim); margin-bottom:6px">
+        <span id="at-overall-label">Preparing...</span>
+        <span id="at-overall-count">0 / 0</span>
+      </div>
+      <div class="timer-bar-wrap">
+        <div class="timer-bar" id="at-overall-bar" style="width:0%"></div>
+      </div>
+    </div>
+
+    <!-- Current attempt status -->
+    <div class="capture-status" id="at-current-wrap">
+      <div class="radar" id="at-radar"><div class="radar-sweep"></div></div>
+      <div class="capture-info">
+        <h3 id="at-current-label" style="font-size:15px">Starting...</h3>
+        <div style="margin:6px 0">
+          <div class="timer-bar-wrap">
+            <div class="timer-bar" id="at-wait-bar" style="width:100%; background:linear-gradient(90deg,var(--dim),var(--accent))"></div>
+          </div>
+          <div class="timer-text" id="at-wait-text">Waiting for interface...</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Attempt log table -->
+    <div id="at-attempt-list" style="margin-top:16px"></div>
+
+    <!-- Live terminal -->
+    <div class="terminal" id="log-4" style="max-height:140px">Auto-test starting...</div>
+
+    <div class="btn-row" style="margin-top:12px">
+      <button class="btn btn-ghost btn-danger" id="at-skip-btn" onclick="atSkip()">⏭ Skip Auto-Test (Manual)</button>
+    </div>
+  </div>
+
+  <!-- ── STEP 5: Results ── -->
+  <div class="wizard-panel" id="panel-5">
+    <div class="panel-title"><span class="icon">📋</span> Step 6 — Results</div>
+
+    <!-- Auto-test outcome banner (populated by JS) -->
+    <div id="at-outcome-banner" style="display:none; margin-bottom:16px"></div>
+
+    <!-- Contextual next-step guidance (populated by JS) -->
+    <div id="results-guidance" style="display:none; margin-bottom:16px"></div>
+
+    <div id="results-container">
+      <div style="text-align:center; padding:20px; color:var(--dim)">Loading results...</div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-success" id="btnApply" onclick="goStep(6)">→ Review &amp; Fine-tune Settings</button>
+      <button class="btn btn-ghost" onclick="downloadPcap()">⬇ Download PCAP</button>
+      <button class="btn btn-danger" onclick="doRestore()">✕ Restore Original Config</button>
+    </div>
+  </div>
+
+  <!-- ── STEP 6: Edit & Apply ── -->
+  <div class="wizard-panel" id="panel-6">
+    <div class="panel-title"><span class="icon">✏️</span> Step 7 — Review, Edit &amp; Apply</div>
+
+    <!-- Context message changes depending on whether autotest succeeded -->
+    <div id="apply-context-success" style="display:none" class="info-box">
+      ✅ <strong>Your router is already connected to the internet</strong> using the settings shown below —
+      the auto-test found a working combination.<br><br>
+      You don't need to click Apply unless you want to make changes. The settings are already live.
+      Use this form if you want to adjust anything (e.g. swap to a different DNS, remove MAC cloning)
+      and re-apply.
+    </div>
+
+    <div id="apply-context-failed" style="display:none" class="info-box">
+      The auto-test could not establish a connection automatically. This usually means one of:<br><br>
+      <div style="display:grid; grid-template-columns:20px 1fr; gap:8px; margin:4px 0; line-height:1.6">
+        <span style="color:var(--warn)">▸</span>
+        <span><strong>PPPoE with CHAP</strong> — the password was hashed during capture and couldn't be
+        recovered. Enter your PPPoE password manually in the field below.</span>
+        <span style="color:var(--warn)">▸</span>
+        <span><strong>Static IP with no ARP traffic</strong> — the ISP router didn't send enough traffic
+        to detect its IP. Enter the IP, gateway and netmask manually if you have them.</span>
+        <span style="color:var(--warn)">▸</span>
+        <span><strong>Unusual authentication</strong> — some ISPs use IPoE with specific VLAN stacking or
+        802.1x. Check the PCAP file in Wireshark for clues.</span>
+      </div><br>
+      Fill in any missing or uncertain fields below and click Apply to try manually.
+    </div>
+
+    <div id="apply-context-skipped" style="display:none" class="info-box">
+      You skipped the auto-test. Review the detected settings below, fill in anything missing,
+      and click Apply to configure your WAN port.
+    </div>
+
+    <div class="result-section">
+      <h4>Connection Type</h4>
+      <div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:4px">
+        <label class="auth-radio"><input type="radio" name="apply_auth" value="pppoe"  id="r_pppoe">  <span class="auth-badge pppoe">PPPoE</span></label>
+        <label class="auth-radio"><input type="radio" name="apply_auth" value="dhcp"   id="r_dhcp">   <span class="auth-badge dhcp">DHCP</span></label>
+        <label class="auth-radio"><input type="radio" name="apply_auth" value="static" id="r_static"> <span class="auth-badge static">Static IP</span></label>
+      </div>
+    </div>
+
+    <div id="edit-pppoe" class="result-section" style="display:none">
+      <h4>PPPoE Credentials</h4>
+      <div class="edit-grid">
+        <label>Username</label>
+        <div><input id="e_user" type="text" class="edit-input" placeholder="username@isp.co.uk">
+             <span class="conf-badge" id="conf_user"></span></div>
+        <label>Password</label>
+        <div><input id="e_pass" type="text" class="edit-input" placeholder="password">
+             <span class="conf-badge" id="conf_pass"></span></div>
+        <label>Auth Method</label>
+        <div><span id="e_auth_method" style="color:var(--dim); font-size:13px">—</span></div>
+      </div>
+    </div>
+
+    <div id="edit-ip" class="result-section" style="display:none">
+      <h4>IP Configuration</h4>
+      <div class="edit-grid">
+        <label>IP Address</label>
+        <div><input id="e_ip"   type="text" class="edit-input" placeholder="e.g. 82.68.12.6">
+             <span class="conf-badge" id="conf_ip"></span></div>
+        <label>Gateway</label>
+        <div><input id="e_gw"   type="text" class="edit-input" placeholder="e.g. 82.68.12.1">
+             <span class="conf-badge" id="conf_gw"></span></div>
+        <label>Netmask</label>
+        <div><input id="e_nm"   type="text" class="edit-input" placeholder="e.g. 255.255.255.248">
+             <span class="conf-badge" id="conf_nm"></span></div>
+        <label>DNS Primary</label>
+        <div><input id="e_dns1" type="text" class="edit-input" value="1.1.1.1"></div>
+        <label>DNS Secondary</label>
+        <div><input id="e_dns2" type="text" class="edit-input" value="1.0.0.1"></div>
+      </div>
+    </div>
+
+    <div class="result-section">
+      <h4>Additional Settings</h4>
+      <div class="edit-grid">
+        <label>MAC Address<br><span style="font-size:10px;color:var(--dim)">clone ISP router MAC</span></label>
+        <div><input id="e_mac"  type="text" class="edit-input" placeholder="leave blank = use own MAC">
+             <span class="conf-badge" id="conf_mac"></span></div>
+        <label>VLAN ID<br><span style="font-size:10px;color:var(--dim)">802.1Q tag, blank = none</span></label>
+        <div><input id="e_vlan" type="text" class="edit-input" placeholder="e.g. 101 (or blank)">
+             <span class="conf-badge" id="conf_vlan"></span></div>
+      </div>
+    </div>
+
+    <div id="notes-box" class="warn-box" style="display:none"></div>
+
+    <div id="apply-status" style="display:none; margin:16px 0">
+      <div class="capture-status">
+        <div class="radar" id="applyRadar"><div class="radar-sweep"></div></div>
+        <div class="capture-info">
+          <h3 id="apply-status-text">Applying settings...</h3>
+          <p style="color:var(--dim);font-size:12px">Network restarting — reconnect in ~20 seconds</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-success" id="btnApplyFinal" onclick="doApply()">⚡ Apply Settings to WAN</button>
+      <button class="btn btn-ghost" onclick="goStep(5)">← Back to Results</button>
+      <button class="btn btn-danger" onclick="doRestore()">✕ Restore Original Config</button>
+    </div>
+    <div class="terminal" id="log-6" style="display:none"></div>
+  </div>
+
+</div><!-- /isp-wizard-wrap -->
+
+<script>
+(function() {
+  "use strict";
+
+  var BASE = "<%=luci.dispatcher.build_url("admin","network","isp_recovery")%>";
+  var state = {
+    currentStep: 0,
+    capturePort: "lan1",
+    interfaces: {},
+    results: {},
+    autotestPoll: null,
+    logSeenLines: 0,
+    timerInterval: null,
+    timerSeconds: 30,
+    logPoll: null,
+    atWaitTimer: null,
+    atWaitSeconds: 0,
+    atTotalSeconds: 30
+  };
+
+  // ── Navigation ────────────────────────────────────────────────────────────
+  window.goStep = function(n) {
+    document.querySelectorAll('.wizard-panel').forEach(function(p,i) {
+      p.classList.toggle('active', i === n);
+    });
+    document.querySelectorAll('.step-item').forEach(function(s,i) {
+      s.classList.remove('active','done');
+      if (i < n)  s.classList.add('done');
+      if (i === n) s.classList.add('active');
+    });
+    state.currentStep = n;
+  };
+
+  function ajax(action, params, cb) {
+    var url = BASE + "/" + action;
+    var body = params ? Object.keys(params).map(function(k){
+      return encodeURIComponent(k) + "=" + encodeURIComponent(params[k]);
+    }).join("&") : null;
+    var xhr = new XMLHttpRequest();
+    xhr.open(body ? "POST" : "GET", url);
+    if (body) xhr.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+    xhr.onload = function() {
+      try { cb(null, JSON.parse(xhr.responseText)); }
+      catch(e) { cb(null, {raw: xhr.responseText}); }
+    };
+    xhr.onerror = function() { cb("Network error"); };
+    xhr.send(body);
+  }
+
+  function log(panelId, msg, cls) {
+    var el = document.getElementById("log-" + panelId);
+    if (!el) return;
+    el.style.display = "block";
+    var line = document.createElement("div");
+    if (cls) line.className = "t-" + cls;
+    line.textContent = "[" + new Date().toLocaleTimeString() + "] " + msg;
+    el.appendChild(line);
+    el.scrollTop = el.scrollHeight;
+  }
+
+  function esc(s) {
+    return String(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+  }
+
+  // ── Step 0: Detect ────────────────────────────────────────────────────────
+  window.doDetect = function() {
+    var btn = document.getElementById("btnDetect");
+    btn.disabled = true; btn.textContent = "Checking...";
+    log(0, "Checking network interfaces...");
+    ajax("detect", null, function(err, data) {
+      btn.disabled = false; btn.textContent = "⚡ Check Interfaces & Continue";
+      if (err || data.error) { log(0,"Error: "+(err||data.error),"err"); return; }
+      state.interfaces = data;
+      state.capturePort = "lan1"; // always fixed
+
+      document.getElementById("disp-wan").textContent = data.wan || "—";
+      document.getElementById("disp-lan").textContent = data.lan || "—";
+      document.getElementById("iface-display").style.display = "block";
+
+      // Show warning if lan1 wasn't found
+      if (data.lan1_ok === "no") {
+        document.getElementById("lan1-warn").style.display = "block";
+        log(0, "WARNING: lan1 not found on this router", "warn");
+        // Don't auto-advance — user needs to see the warning
+        btn.disabled = false;
+        return;
+      }
+
+      log(0, "✓ lan1 confirmed  |  WAN: " + data.wan);
+      setTimeout(function() { goStep(1); }, 800);
+    });
+  };
+
+  // ── Step 1: Setup ─────────────────────────────────────────────────────────
+  window.doSetup = function() {
+    var btn = document.getElementById("btnSetup");
+    btn.disabled = true; btn.textContent = "Preparing...";
+    document.getElementById("prep-status").textContent = "Setting up capture port...";
+    log(1, "Preparing port " + state.capturePort + " — bringing link DOWN...");
+    ajax("setup", {port: state.capturePort}, function(err) {
+      btn.disabled = false; btn.textContent = "🔧 Prepare Port";
+      if (err) { log(1,"Error: "+err,"err"); return; }
+      document.getElementById("prep-status").innerHTML =
+        '<span class="status-dot green"></span>Port ' + state.capturePort +
+        ' is DOWN — ISP router will detect cable disconnect';
+      log(1, "Port down ✓ — ready for ISP router connection");
+      setTimeout(function() { goStep(2); }, 1200);
+    });
+  };
+
+  // ── Step 2: Start Capture ─────────────────────────────────────────────────
+  window.doCapture = function() {
+    var btn = document.getElementById("btnCapture");
+    btn.disabled = true; btn.textContent = "Starting capture...";
+    ajax("capture", {port: state.capturePort}, function(err) {
+      if (err) { log(3,"Error: "+err,"err"); btn.disabled=false; return; }
+      goStep(3);
+      startTimer();
+      startLogPoll();
+    });
+  };
+
+  // ── Capture timer ─────────────────────────────────────────────────────────
+  function startTimer() {
+    state.timerSeconds = 30;
+    updateTimer();
+    state.timerInterval = setInterval(function() {
+      state.timerSeconds--;
+      updateTimer();
+      if (state.timerSeconds <= 0) { clearInterval(state.timerInterval); stopCapture(); }
+    }, 1000);
+  }
+
+  function updateTimer() {
+    var pct = (state.timerSeconds / 30) * 100;
+    document.getElementById("timerBar").style.width = pct + "%";
+    document.getElementById("timerText").textContent = state.timerSeconds + " seconds remaining";
+    var txt = document.getElementById("cap-status-text");
+    if      (state.timerSeconds > 20) txt.textContent = "Waiting for ISP router to send traffic...";
+    else if (state.timerSeconds >  8) txt.textContent = "Capturing authentication handshake...";
+    else                              txt.textContent = "Finalising capture...";
+  }
+
+  window.doStopEarly = function() {
+    if (state.timerInterval) clearInterval(state.timerInterval);
+    stopCapture();
+  };
+
+  function stopCapture() {
+    if (state.logPoll) { clearInterval(state.logPoll); state.logPoll = null; }
+    document.getElementById("cap-status-text").textContent = "Analysing all captured packets...";
+    document.getElementById("radarAnim").classList.add("idle");
+    log(3, "Capture stopped — running full analysis...");
+
+    ajax("stop", null, function(err, data) {
+      if (err || !data) { log(3,"Analysis error: "+(err||"no data"),"err"); return; }
+      state.results = data;
+      // Move straight to auto-test step, which will call the backend
+      goStep(4);
+      startAutoTest(data);
+    });
+  }
+
+  function startLogPoll() {
+    state.logSeenLines = 0;
+    state.logPoll = setInterval(function() {
+      var xhr = new XMLHttpRequest();
+      xhr.open("GET", BASE + "/log?lines=25");
+      xhr.onload = function() {
+        var lines = xhr.responseText.trim().split("\n");
+        var el = document.getElementById("log-3");
+        lines.slice(state.logSeenLines).forEach(function(l) {
+          if (!l) return;
+          var d = document.createElement("div");
+          d.textContent = l; el.appendChild(d);
+        });
+        state.logSeenLines = lines.length;
+        el.scrollTop = el.scrollHeight;
+      };
+      xhr.send();
+    }, 2000);
+  }
+
+  // ── Auto-test ─────────────────────────────────────────────────────────────
+  var atAttempts      = [];   // [{num,label,proto,mac,vlan,status,rtt}, ...]
+  var atLogSeen       = 0;
+  var atWaitCountdown = null;
+
+  function startAutoTest(analysisData) {
+    log(4, "Starting auto-test sequence...");
+    document.getElementById("at-overall-label").textContent = "Launching auto-test...";
+
+    // Fire the backend autotest (runs in background, we poll for progress)
+    ajax("autotest", null, function(err) {
+      if (err) { log(4,"Failed to start autotest: "+err,"err"); return; }
+      log(4, "Auto-test running — testing each config combination...");
+      // Start polling both progress and log
+      state.autotestPoll = setInterval(pollAutoTest, 3000);
+      atLogSeen = 0;
+      pollAutoTestLog();
+      setInterval(pollAutoTestLog, 3000);
+    });
+  }
+
+  function pollAutoTest() {
+    ajax("autotest_results", null, function(err, data) {
+      if (err || !data || data.status === "not_started") return;
+      // Update time estimate as soon as we know the total
+      if (data.attempts_total > 0) updateMaxTimeEstimate(data.attempts_total);
+      renderAutoTestProgress(data);
+
+      if (data.status === "success" || data.status === "failed" || data.status === "error") {
+        clearInterval(state.autotestPoll);
+        if (atWaitCountdown) { clearInterval(atWaitCountdown); atWaitCountdown = null; }
+
+        // Short delay then show results page
+        setTimeout(function() {
+          showAutoTestOutcome(data);
+          renderResults(state.results);
+          populateEditForm(state.results);
+          goStep(5);
+        }, 2000);
+      }
+    });
+  }
+
+  function pollAutoTestLog() {
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", BASE + "/log?lines=50");
+    xhr.onload = function() {
+      var lines = xhr.responseText.trim().split("\n");
+      var el = document.getElementById("log-4");
+      lines.slice(atLogSeen).forEach(function(l) {
+        if (!l) return;
+        var d = document.createElement("div"); d.textContent = l; el.appendChild(d);
+      });
+      atLogSeen = lines.length;
+      el.scrollTop = el.scrollHeight;
+    };
+    xhr.send();
+  }
+
+  function renderAutoTestProgress(data) {
+    var done  = data.attempts_done  || 0;
+    var total = data.attempts_total || 1;
+    var tried = data.tried || [];
+    var cur   = data.current || "";
+
+    // Overall bar
+    document.getElementById("at-overall-count").textContent = done + " / " + total;
+    document.getElementById("at-overall-bar").style.width = Math.round((done / total) * 100) + "%";
+
+    if (data.status === "success") {
+      document.getElementById("at-overall-label").textContent = "✓ Connected: " + cur;
+      document.getElementById("at-radar").classList.add("idle");
+      document.getElementById("at-wait-text").textContent = "Connection established!";
+      document.getElementById("at-wait-bar").style.background = "var(--accent2)";
+      document.getElementById("at-wait-bar").style.width = "100%";
+    } else if (data.status === "failed") {
+      document.getElementById("at-overall-label").textContent = "All attempts exhausted — last config left in place";
+      document.getElementById("at-radar").classList.add("idle");
+    } else {
+      document.getElementById("at-overall-label").textContent = "Testing: " + cur;
+      document.getElementById("at-current-label").textContent = cur;
+
+      // Wait countdown bar (each attempt is 30s wait + ~5s ping)
+      if (atWaitCountdown) clearInterval(atWaitCountdown);
+      state.atWaitSeconds = 0;
+      state.atTotalSeconds = 35;
+      atWaitCountdown = setInterval(function() {
+        state.atWaitSeconds++;
+        var pct = Math.min(100, Math.round((state.atWaitSeconds / state.atTotalSeconds) * 100));
+        document.getElementById("at-wait-bar").style.width = pct + "%";
+        var remaining = state.atTotalSeconds - state.atWaitSeconds;
+        document.getElementById("at-wait-text").textContent =
+          remaining > 0 ? "Waiting " + remaining + "s for interface..." : "Ping testing...";
+        if (state.atWaitSeconds >= state.atTotalSeconds) {
+          clearInterval(atWaitCountdown); atWaitCountdown = null;
+        }
+      }, 1000);
+    }
+
+    // Attempt list — show all attempts (tried + remaining as pending)
+    renderAttemptList(tried, done, total, cur, data.status);
+  }
+
+  function renderAttemptList(tried, done, total, current, overallStatus) {
+    var html = "";
+    tried.forEach(function(a) {
+      var rowCls = a.status === "pass" ? "pass" : "fail";
+      var icon   = a.status === "pass" ? "✓" : "✗";
+      var rtt    = a.rtt ? a.rtt + "ms" : "—";
+      html += '<div class="at-row ' + rowCls + '">';
+      html += '<div class="at-num">' + a.num + '</div>';
+      html += '<div class="at-label ' + rowCls + '">' + esc(a.label) + '</div>';
+      html += '<div class="at-status ' + rowCls + '">' + icon + ' ' + a.status.toUpperCase() + '</div>';
+      html += '<div class="at-rtt ' + (a.status==="pass"?"pass":"") + '">' + rtt + '</div>';
+      html += '</div>';
+    });
+
+    // Show current running attempt
+    if (overallStatus === "running" && current) {
+      html += '<div class="at-row running">';
+      html += '<div class="at-num">' + (done+1) + '</div>';
+      html += '<div class="at-label running">⟳ ' + esc(current) + '</div>';
+      html += '<div class="at-status running">TESTING</div>';
+      html += '<div class="at-rtt">...</div>';
+      html += '</div>';
+    }
+
+    // Show how many remaining
+    var remaining = total - done - (overallStatus === "running" ? 1 : 0);
+    if (remaining > 0 && overallStatus === "running") {
+      html += '<div class="at-row pending">';
+      html += '<div class="at-num">+' + remaining + '</div>';
+      html += '<div class="at-label" style="color:var(--dim)">more combinations queued</div>';
+      html += '<div class="at-status pending">PENDING</div>';
+      html += '<div class="at-rtt">—</div>';
+      html += '</div>';
+    }
+
+    document.getElementById("at-attempt-list").innerHTML = html;
+  }
+
+  function showAutoTestOutcome(data) {
+    // Banner on results page
+    var banner = document.getElementById("at-outcome-banner");
+    if (banner) {
+      banner.style.display = "block";
+      if (data.status === "success") {
+        banner.style.cssText = "display:block; background:rgba(0,255,157,0.08); border:1px solid var(--accent2); border-radius:4px; padding:14px 18px; margin-bottom:16px";
+        banner.innerHTML =
+          '<span style="color:var(--accent2);font-family:var(--head);font-size:16px;letter-spacing:1px">✓ CONNECTED — ' + esc(data.current) + '</span><br>' +
+          '<span style="font-size:13px;color:var(--text)">Your router is online. The settings are already live on your WAN port.</span> ' +
+          '<span style="font-size:12px;color:var(--dim)">(' + data.attempts_done + ' attempt' + (data.attempts_done===1?'':'s') + ' needed)</span>';
+      } else {
+        banner.style.cssText = "display:block; background:rgba(255,51,85,0.06); border:1px solid var(--danger); border-radius:4px; padding:14px 18px; margin-bottom:16px";
+        banner.innerHTML =
+          '<span style="color:var(--danger);font-family:var(--head);font-size:16px;letter-spacing:1px">✗ AUTO-TEST FAILED — ' + data.attempts_done + ' combinations tried</span><br>' +
+          '<span style="font-size:13px;color:var(--text)">No combination connected. Last config left in place. See Step 7 to fix manually.</span>';
+      }
+    }
+
+    // Results-page guidance box
+    var guidance = document.getElementById("results-guidance");
+    if (guidance) {
+      guidance.style.display = "block";
+      if (data.status === "success") {
+        guidance.style.cssText = "display:block; font-size:13px; color:var(--dim); padding:10px 14px; border-left:3px solid var(--accent2); background:rgba(0,255,157,0.04); border-radius:0 4px 4px 0; margin-bottom:16px";
+        guidance.innerHTML = '<strong style="color:var(--accent2)">You\'re done!</strong> Your internet connection is working. ' +
+          'The details below are what was captured — use Step 7 only if you want to make manual adjustments.';
+      } else {
+        guidance.style.cssText = "display:block; font-size:13px; color:var(--dim); padding:10px 14px; border-left:3px solid var(--warn); background:rgba(255,107,53,0.04); border-radius:0 4px 4px 0; margin-bottom:16px";
+        guidance.innerHTML = '<strong style="color:var(--warn)">Action needed:</strong> Review the captured details below, ' +
+          'then go to Step 7 to fill in any missing information and apply the settings manually.';
+      }
+    }
+
+    // Step 7 context panels
+    var ctxOk   = document.getElementById("apply-context-success");
+    var ctxFail = document.getElementById("apply-context-failed");
+    if (ctxOk)   ctxOk.style.display   = (data.status === "success") ? "block" : "none";
+    if (ctxFail) ctxFail.style.display = (data.status !== "success") ? "block" : "none";
+    var ctxSkip = document.getElementById("apply-context-skipped");
+    if (ctxSkip) ctxSkip.style.display = "none";
+  }
+
+  // Skip auto-test and go straight to results/manual
+  window.atSkip = function() {
+    if (state.autotestPoll) clearInterval(state.autotestPoll);
+    if (atWaitCountdown) clearInterval(atWaitCountdown);
+    // Show the "skipped" context on step 7
+    var ctxSkip = document.getElementById("apply-context-skipped");
+    var ctxOk   = document.getElementById("apply-context-success");
+    var ctxFail = document.getElementById("apply-context-failed");
+    if (ctxSkip) ctxSkip.style.display = "block";
+    if (ctxOk)   ctxOk.style.display   = "none";
+    if (ctxFail) ctxFail.style.display = "none";
+    // Guidance on results page
+    var guidance = document.getElementById("results-guidance");
+    if (guidance) {
+      guidance.style.cssText = "display:block; font-size:13px; color:var(--dim); padding:10px 14px; border-left:3px solid var(--accent); background:rgba(0,212,255,0.04); border-radius:0 4px 4px 0; margin-bottom:16px";
+      guidance.innerHTML = 'Auto-test skipped. Review the captured details below and use Step 7 to apply the settings manually.';
+    }
+    renderResults(state.results);
+    populateEditForm(state.results);
+    goStep(5);
+  };
+
+  // Update max-time estimate once we know total attempts
+  function updateMaxTimeEstimate(total) {
+    var el = document.getElementById("at-max-time");
+    if (!el || !total) return;
+    var mins = Math.ceil((total * 35) / 60);
+    el.textContent = "up to ~" + mins + " minute" + (mins === 1 ? "" : "s") + " (" + total + " combinations)";
+  }
+
+  // ── Results (step 5) ──────────────────────────────────────────────────────
+  function renderResults(d) {
+    var at   = d.auth_type       || "unknown";
+    var conf = d.auth_confidence || "low";
+    var ip   = d.ip    || {};
+    var pp   = d.pppoe || {};
+    var html = "";
+
+    html += '<div style="margin-bottom:20px;display:flex;align-items:center;gap:12px">';
+    html += '<span class="auth-badge '+at+'">'+at.toUpperCase()+'</span>';
+    html += '<span class="conf-badge '+conf+'">'+conf+' confidence</span>';
+    html += '</div>';
+
+    html += '<div class="result-section"><h4>🖧 Network Details</h4><div class="result-grid">';
+    html += rrow("Auth Method", at.toUpperCase());
+    html += rrow("MAC Address", d.mac_address, "For MAC cloning on WAN");
+    html += rrow("VLAN ID",     d.vlan_id,     "802.1Q tag — blank = untagged");
+    html += '</div></div>';
+
+    if (at === "pppoe") {
+      html += '<div class="result-section"><h4>🔐 PPPoE Credentials</h4><div class="result-grid">';
+      html += rrow("Username",  pp.username);
+      html += rrow("Password",  pp.password ? "••••••••" : null);
+      html += rrow("Auth Mode", pp.auth_method);
+      html += '</div>';
+      if (pp.auth_method === "CHAP") {
+        html += '<div class="warn-box">⚠ CHAP detected — password is MD5-hashed. Enter it manually in the edit form.</div>';
+      }
+      html += '</div>';
+    } else {
+      html += '<div class="result-section"><h4>📡 IP Configuration</h4><div class="result-grid">';
+      var nmLabel = "Netmask" + (ip.netmask_source ? " ("+ip.netmask_source+")" : "");
+      html += rrow("IP Address",   ip.address, null, ip.ip_confidence);
+      html += rrow("Gateway",      ip.gateway, null, ip.gw_confidence);
+      html += rrow(nmLabel,        ip.netmask, null,
+                   ip.netmask_source==="calculated"?"calc":
+                   ip.netmask_source==="dhcp"?"high":"medium");
+      html += rrow("DNS Primary",  ip.dns1 || "1.1.1.1");
+      html += rrow("DNS Secondary",ip.dns2 || "1.0.0.1");
+      html += '</div></div>';
+    }
+
+    if (d.notes) html += '<div class="warn-box">ℹ '+esc(d.notes)+'</div>';
+    html += '<div style="margin-top:12px;font-size:11px;color:var(--dim)">📁 PCAP: '+esc(d.pcap_file||"/tmp/isp-capture.pcap")+'</div>';
+    document.getElementById("results-container").innerHTML = html;
+  }
+
+  function rrow(label, val, hint, conf) {
+    var v = val ? '<span class="result-val">'+esc(val)+'</span>'
+                : '<span class="result-val na">not detected</span>';
+    var c = conf ? ' <span class="conf-badge '+conf+'">'+conf+'</span>' : "";
+    var h = hint ? ' title="'+esc(hint)+'"' : "";
+    return '<div class="result-key"'+h+'>'+label+'</div><div>'+v+c+'</div>';
+  }
+
+  // ── Populate editable form (step 6) ───────────────────────────────────────
+  function populateEditForm(d) {
+    var at = d.auth_type || "unknown";
+    var ip = d.ip    || {};
+    var pp = d.pppoe || {};
+
+    var r = document.getElementById("r_" + at);
+    if (r) r.checked = true;
+    else { var rd = document.getElementById("r_static"); if(rd) rd.checked=true; at="static"; }
+
+    setVal("e_user", pp.username);
+    setVal("e_pass", pp.password);
+    document.getElementById("e_auth_method").textContent = pp.auth_method || "—";
+    setBadge("conf_user", pp.username ? "high" : "low");
+    setBadge("conf_pass", pp.password ? (pp.auth_method==="CHAP"?"low":"high") : "low");
+
+    setVal("e_ip",   ip.address);
+    setVal("e_gw",   ip.gateway);
+    setVal("e_nm",   ip.netmask);
+    setVal("e_dns1", ip.dns1 || "1.1.1.1");
+    setVal("e_dns2", ip.dns2 || "1.0.0.1");
+    setBadge("conf_ip", ip.ip_confidence || "low");
+    setBadge("conf_gw", ip.gw_confidence || "low");
+    setBadge("conf_nm",
+      ip.netmask_source==="calculated"?"calc":
+      ip.netmask_source==="dhcp"?"high":"medium");
+
+    setVal("e_mac",  d.mac_address);
+    setVal("e_vlan", d.vlan_id);
+    setBadge("conf_mac",  d.mac_address ? "high" : "low");
+    setBadge("conf_vlan", d.vlan_id ? "high" : "");
+
+    if (d.notes) {
+      var nb = document.getElementById("notes-box");
+      if (nb) { nb.textContent = "ℹ " + d.notes; nb.style.display = "block"; }
+    }
+    updateAuthSections(at);
+  }
+
+  function updateAuthSections(at) {
+    document.getElementById("edit-pppoe").style.display = (at === "pppoe") ? "block" : "none";
+    document.getElementById("edit-ip").style.display    = (at !== "pppoe") ? "block" : "none";
+  }
+
+  document.querySelectorAll('input[name="apply_auth"]').forEach(function(r) {
+    r.addEventListener("change", function() { updateAuthSections(this.value); });
+  });
+
+  function setVal(id, val) { var e=document.getElementById(id); if(e&&val) e.value=val; }
+  function gv(id)          { var e=document.getElementById(id); return e?e.value.trim():""; }
+
+  function setBadge(id, level) {
+    var el = document.getElementById(id);
+    if (!el || !level) return;
+    var labels = {high:"✓ high", medium:"⚠ medium", low:"⚠ low — check!", calc:"≈ calculated"};
+    el.className = "conf-badge " + level;
+    el.textContent = labels[level] || level;
+  }
+
+  // ── Apply (step 6) ────────────────────────────────────────────────────────
+  window.doApply = function() {
+    var btn = document.getElementById("btnApplyFinal");
+    btn.disabled = true;
+    document.getElementById("apply-status").style.display = "block";
+
+    var at = "static";
+    document.querySelectorAll('input[name="apply_auth"]').forEach(function(r) {
+      if (r.checked) at = r.value;
+    });
+
+    var params = {
+      auth_type: at,
+      username: gv("e_user"), password: gv("e_pass"),
+      ip:       gv("e_ip"),   gateway:  gv("e_gw"),
+      netmask:  gv("e_nm"),   dns1:     gv("e_dns1"),
+      dns2:     gv("e_dns2"), mac:      gv("e_mac"),
+      vlan:     gv("e_vlan")
+    };
+
+    log(6, "Applying: " + at.toUpperCase() +
+        (params.username ? "  user="+params.username : "") +
+        (params.ip       ? "  ip="+params.ip         : ""));
+
+    ajax("apply", params, function(err) {
+      if (err) { log(6,"Error: "+err,"err"); btn.disabled=false; return; }
+      document.getElementById("apply-status-text").textContent = "Settings applied! Network restarting...";
+      log(6, "Done ✓ — reconnect in ~20 seconds");
+      log(6, "If no internet, use Restore to revert to original config.", "warn");
+      setTimeout(function() {
+        document.getElementById("apply-status-text").textContent =
+          "✅ Complete — check Network → Interfaces for WAN status";
+        document.getElementById("applyRadar").classList.add("idle");
+      }, 10000);
+    });
+  };
+
+  // ── Restore ───────────────────────────────────────────────────────────────
+  window.doRestore = function() {
+    if (!confirm("Restore original WAN config and discard all captured settings?")) return;
+    ajax("restore", null, function() {
+      ajax("cleanup", null, function() {});
+      alert("Original configuration restored. Network restarting...");
+      goStep(0);
+    });
+  };
+
+  window.downloadPcap = function() {
+    alert("PCAP at /tmp/isp-capture.pcap on your router.\n\nDownload:\n  scp root@192.168.1.1:/tmp/isp-capture.pcap .\n\nOpen in Wireshark for full analysis.");
+  };
+
+})();
+</script>
+
+<%+footer%>
