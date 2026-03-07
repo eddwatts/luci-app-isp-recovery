@@ -14,7 +14,7 @@ Works with any ISP that uses standard protocols — **Sky, BT, Virgin Media, Tal
 
 ![Equipment setup diagram](docs/screenshots/00-setup-diagram.svg)
 
-> Your monitoring laptop connects on **LAN 2 or LAN 3** (or WiFi). **LAN 1 is reserved exclusively for the ISP router capture cable.**
+> **ONT/wall socket → New OpenWrt router WAN port** (normal internet connection)<br>> **OpenWrt LAN 1 → Old ISP router WAN port** (capture cable — old router needs power only, no DSL/fibre line)<br>> **OpenWrt LAN 2 → Laptop** (monitoring — or use WiFi)
 
 ---
 

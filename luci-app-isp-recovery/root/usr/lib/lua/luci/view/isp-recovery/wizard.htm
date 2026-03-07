@@ -742,49 +742,57 @@
 
   <!-- ── STEP 2: Connect ISP router ── -->
   <div class="wizard-panel" id="panel-2">
-    <div class="panel-title"><span class="icon">🔌</span> Step 3 — Connect the ISP Router</div>
+    <div class="panel-title"><span class="icon">🔌</span> Step 3 — Connect the Old ISP Router</div>
 
     <div style="text-align:center; padding:16px 0 8px">
-      <div style="font-size:48px; margin-bottom:8px">📞/🔆 ——— 📦 ——— 🔌 ——— 🖥️</div>
-      <div style="font-family:var(--head); font-size:11px; letter-spacing:2px; color:var(--dim)">
-        DSL/FIBRE/COAX LINE &nbsp;&nbsp; ISP ROUTER (WAN IN, LAN OUT) &nbsp;&nbsp; CABLE &nbsp;&nbsp; YOUR ROUTER (LAN 1)
+      <div style="font-size:42px; margin-bottom:6px">🔆 ——→ 🖥️ ——→ 📦</div>
+      <div style="font-family:var(--head); font-size:10px; letter-spacing:2px; color:var(--dim)">
+        ONT/WALL → <span style="color:var(--accent)">NEW ROUTER WAN</span>
+        &nbsp;&nbsp;&nbsp;
+        <span style="color:var(--danger)">NEW ROUTER LAN 1</span> → OLD ISP ROUTER WAN PORT
       </div>
     </div>
 
     <div class="info-box">
+      <strong style="color:var(--accent)">How this works:</strong> Your new OpenWrt router sits
+      <strong>between</strong> the internet and the old ISP router. The old router thinks LAN 1 is
+      its internet connection and authenticates across it — we capture that handshake.<br><br>
+
       <strong style="color:var(--accent)">Do this now, in order:</strong><br><br>
       <div style="display:grid; grid-template-columns:24px 1fr; gap:10px; line-height:1.6">
         <span style="color:var(--accent2); font-weight:bold; text-align:center">1</span>
-        <span>Make sure the ISP router's <strong>external line is plugged in</strong> — this is the
-        phone cable (DSL/ADSL), fibre ONT cable, or coax cable that comes from the wall.
-        <strong style="color:var(--warn)">Without this the ISP router has nothing to authenticate to and the capture will be empty.</strong></span>
+        <span>Make sure your <strong>ONT, DSL modem, or wall socket</strong> is plugged into the
+        <strong style="color:var(--accent2)">WAN port</strong> of your new OpenWrt router as normal.
+        This is your live internet connection and should already be connected.</span>
 
         <span style="color:var(--accent2); font-weight:bold; text-align:center">2</span>
-        <span>Take an Ethernet cable and plug one end into <strong style="color:var(--accent2)">LAN 1</strong>
-        on your OpenWrt router. LAN 1 is currently offline so the link light will not come on yet — that's normal.</span>
+        <span>Take an Ethernet cable and plug one end into
+        <strong style="color:var(--danger)">LAN 1</strong> on your OpenWrt router.
+        LAN 1 is currently offline so the link light will not come on yet — that's expected.</span>
 
         <span style="color:var(--accent2); font-weight:bold; text-align:center">3</span>
-        <span>Plug the other end into the <strong>WAN</strong> or <strong>Internet</strong> port on your
-        ISP router — this is usually a different colour from the LAN ports, often blue or yellow.</span>
+        <span>Plug the other end into the <strong>WAN</strong> or <strong>Internet</strong> port of
+        your old ISP router — usually a different colour from the LAN ports, often blue or yellow.
+        <strong>No DSL or fibre line is needed on the old router</strong> — power only.</span>
 
         <span style="color:var(--accent2); font-weight:bold; text-align:center">4</span>
-        <span>If the ISP router has been running for a while, <strong>reboot it now</strong> (unplug
-        the power, wait 5 seconds, plug back in). A fresh boot forces it to re-authenticate from scratch,
-        which gives us the best chance of capturing the credentials cleanly.</span>
+        <span>Reboot the old ISP router now (unplug power, wait 5 seconds, plug back in).
+        A fresh boot forces it to re-authenticate from scratch, giving us the cleanest capture.</span>
 
         <span style="color:var(--accent2); font-weight:bold; text-align:center">5</span>
-        <span>Wait for the ISP router's lights to settle — the DSL or WAN light should be solid, not flashing
-        (about 30–60 seconds after power-on). Then click the button below.</span>
+        <span>Wait for the old router's lights to settle (30–60 seconds). Its WAN or broadband
+        light may flash or stay off since there's no DSL line — that's fine. Just wait for it to
+        finish booting, then click the button below.</span>
       </div>
     </div>
 
     <div class="warn-box">
-      ⚠ <strong>Do not click until the ISP router's line is connected and its WAN light is solid.</strong>
-      The authentication happens in the first few seconds of the connection — click too early and you'll miss it.
+      ⚠ <strong>The old router does NOT need its phone/fibre/coax line.</strong>
+      It authenticates via the Ethernet cable on LAN 1. Power it on with just the LAN 1 cable connected.
     </div>
 
     <div class="btn-row">
-      <button class="btn btn-primary" id="btnCapture" onclick="doCapture()">▶ ISP Router Ready — Start Capture!</button>
+      <button class="btn btn-primary" id="btnCapture" onclick="doCapture()">▶ Old Router Ready — Start Capture!</button>
       <button class="btn btn-ghost" onclick="goStep(1)">← Back</button>
     </div>
   </div>

@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="860" height="460" viewBox="0 0 860 460">
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="460" viewBox="0 0 900 460">
   <defs>
     <linearGradient id="bgSetup" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0%" stop-color="#0a0e14"/>
@@ -13,153 +13,172 @@
     <marker id="arrowCyan" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
       <path d="M0,0 L0,6 L8,3 z" fill="#00d4ff"/>
     </marker>
+    <marker id="arrowGreen" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#00ff9d"/>
+    </marker>
   </defs>
 
-  <rect width="860" height="460" rx="8" fill="url(#bgSetup)"/>
+  <rect width="900" height="460" rx="8" fill="url(#bgSetup)"/>
 
   <!-- Title -->
-  <text x="430" y="34" fill="#00d4ff" font-size="15" font-family="sans-serif" font-weight="bold" text-anchor="middle" letter-spacing="3">EQUIPMENT SETUP</text>
-  <line x1="60" y1="46" x2="800" y2="46" stroke="#1a3050" stroke-width="1"/>
+  <text x="450" y="34" fill="#00d4ff" font-size="15" font-family="sans-serif" font-weight="bold" text-anchor="middle" letter-spacing="3">EQUIPMENT SETUP</text>
+  <line x1="30" y1="46" x2="870" y2="46" stroke="#1a3050" stroke-width="1"/>
 
-  <!-- WALL SOCKET -->
-  <rect x="28" y="76" width="118" height="72" rx="5" fill="#0a1020" stroke="#3a5070" stroke-width="1.5" stroke-dasharray="5,3"/>
-  <text x="87" y="102" fill="#3a5070" font-size="20" text-anchor="middle">🔆</text>
-  <text x="87" y="120" fill="#3a5070" font-size="10" font-family="sans-serif" font-weight="bold" text-anchor="middle">DSL / FIBRE</text>
-  <text x="87" y="133" fill="#3a5070" font-size="9" font-family="sans-serif" text-anchor="middle">COAX / ONT</text>
-  <text x="87" y="145" fill="#3a5070" font-size="8" font-family="sans-serif" text-anchor="middle">(wall socket)</text>
+  <!-- ── 1. ONT / WALL SOCKET (far left) ── -->
+  <rect x="18" y="74" width="118" height="80" rx="5" fill="#0a1020" stroke="#3a5070" stroke-width="1.5" stroke-dasharray="5,3"/>
+  <text x="77" y="100" fill="#3a5070" font-size="22" text-anchor="middle">🔆</text>
+  <text x="77" y="118" fill="#3a5070" font-size="10" font-family="sans-serif" font-weight="bold" text-anchor="middle">ONT / WALL</text>
+  <text x="77" y="131" fill="#3a5070" font-size="9" font-family="sans-serif" text-anchor="middle">DSL · Fibre</text>
+  <text x="77" y="143" fill="#3a5070" font-size="9" font-family="sans-serif" text-anchor="middle">Coax · FTTP</text>
+  <!-- Label below -->
+  <text x="77" y="170" fill="#3a5070" font-size="9" font-family="sans-serif" text-anchor="middle" font-weight="bold">External line</text>
 
-  <!-- Wall → ISP router line -->
-  <line x1="146" y1="112" x2="184" y2="112" stroke="#3a5070" stroke-width="2" stroke-dasharray="6,3" marker-end="url(#arrowGrey)"/>
-  <text x="165" y="107" fill="#3a5070" font-size="8" font-family="sans-serif" text-anchor="middle">line in</text>
+  <!-- ONT → OpenWrt WAN -->
+  <line x1="136" y1="114" x2="198" y2="114" stroke="#3a5070" stroke-width="2" stroke-dasharray="6,3" marker-end="url(#arrowGrey)"/>
+  <text x="167" y="108" fill="#3a5070" font-size="8" font-family="sans-serif" text-anchor="middle">to WAN</text>
 
-  <!-- ISP ROUTER -->
-  <rect x="184" y="72" width="170" height="110" rx="6" fill="#0e1a10" stroke="#ff6b35" stroke-width="2"/>
-  <rect x="184" y="72" width="170" height="22" rx="6" fill="rgba(255,107,53,0.12)"/>
-  <rect x="184" y="86" width="170" height="8" fill="rgba(255,107,53,0.12)"/>
-  <text x="269" y="87" fill="#ff6b35" font-size="11" font-family="sans-serif" font-weight="bold" text-anchor="middle" letter-spacing="1">ISP Router / Modem</text>
+  <!-- ── 2. NEW OPENWRT ROUTER (centre-left) ── -->
+  <rect x="198" y="60" width="228" height="132" rx="6" fill="#0e1a28" stroke="#00d4ff" stroke-width="2"/>
+  <rect x="198" y="60" width="228" height="22" rx="6" fill="rgba(0,212,255,0.12)"/>
+  <rect x="198" y="74" width="228" height="8" fill="rgba(0,212,255,0.12)"/>
+  <text x="312" y="75" fill="#00d4ff" font-size="11" font-family="sans-serif" font-weight="bold" text-anchor="middle" letter-spacing="1">New OpenWrt Router</text>
+  <text x="312" y="87" fill="#00d4ff" font-size="8" font-family="sans-serif" text-anchor="middle">(your replacement router)</text>
 
-  <!-- ISP router port labels -->
-  <text x="220" y="112" fill="#3a5070" font-size="8" font-family="monospace" text-anchor="middle">LINE IN</text>
-  <rect x="204" y="115" width="32" height="12" rx="2" fill="#0a1408" stroke="#3a5070" stroke-width="1"/>
-  <circle cx="220" cy="121" r="3" fill="#3a5070"/>
+  <!-- Ports row -->
+  <!-- WAN port -->
+  <text x="228" y="108" fill="#00ff9d" font-size="8" font-family="monospace" text-anchor="middle">WAN</text>
+  <rect x="212" y="111" width="32" height="13" rx="2" fill="#0a1a10" stroke="#00ff9d" stroke-width="1.5"/>
+  <circle cx="228" cy="118" r="3.5" fill="#00ff9d"/>
+  <!-- LAN 1 port -->
+  <text x="282" y="108" fill="#ff3355" font-size="8" font-family="monospace" text-anchor="middle">LAN 1</text>
+  <rect x="266" y="111" width="32" height="13" rx="2" fill="#1a0a0a" stroke="#ff3355" stroke-width="1.5"/>
+  <circle cx="282" cy="118" r="3.5" fill="#ff3355"/>
+  <!-- LAN 2 port -->
+  <text x="336" y="108" fill="#00d4ff" font-size="8" font-family="monospace" text-anchor="middle">LAN 2</text>
+  <rect x="320" y="111" width="32" height="13" rx="2" fill="#0a1a1a" stroke="#00d4ff" stroke-width="1.5"/>
+  <circle cx="336" cy="118" r="3.5" fill="#00d4ff"/>
+  <!-- LAN 3 port -->
+  <text x="390" y="108" fill="#3a5070" font-size="8" font-family="monospace" text-anchor="middle">LAN 3</text>
+  <rect x="374" y="111" width="32" height="13" rx="2" fill="#1a2a3a" stroke="#1a3050" stroke-width="1"/>
+  <circle cx="390" cy="118" r="3" fill="#3a5070"/>
 
-  <text x="269" y="112" fill="#ff6b35" font-size="8" font-family="monospace" text-anchor="middle">WAN/ETH</text>
-  <rect x="253" y="115" width="32" height="12" rx="2" fill="#1a0e08" stroke="#ff6b35" stroke-width="1.5"/>
-  <circle cx="269" cy="121" r="3.5" fill="#ff6b35"/>
+  <!-- LEDs -->
+  <circle cx="212" cy="144" r="3.5" fill="#00ff9d" opacity="0.9"/>
+  <circle cx="226" cy="144" r="3.5" fill="#00ff9d" opacity="0.9"/>
+  <circle cx="240" cy="144" r="3.5" fill="#ff6b35" opacity="0.8"/>
+  <circle cx="254" cy="144" r="3.5" fill="#ff3355" opacity="0.9"/>
+  <circle cx="268" cy="144" r="3.5" fill="#00d4ff" opacity="0.9"/>
+  <text x="312" y="160" fill="#3a5070" font-size="7.5" font-family="monospace" text-anchor="middle">Pwr  WAN  WiFi  LAN1  LAN2</text>
 
-  <text x="318" y="112" fill="#3a5070" font-size="8" font-family="monospace" text-anchor="middle">LAN</text>
-  <rect x="302" y="115" width="32" height="12" rx="2" fill="#0a1418" stroke="#1a3050" stroke-width="1"/>
-  <circle cx="318" cy="121" r="3" fill="#1a3050"/>
+  <!-- LAN 1 annotation -->
+  <rect x="256" y="166" width="52" height="22" rx="3" fill="rgba(255,51,85,0.08)" stroke="#ff3355" stroke-width="1"/>
+  <text x="282" y="178" fill="#ff3355" font-size="8" font-family="sans-serif" text-anchor="middle" font-weight="bold">Capture port</text>
+  <text x="282" y="187" fill="#ff3355" font-size="8" font-family="sans-serif" text-anchor="middle">old router only</text>
 
-  <!-- ISP router LEDs -->
-  <circle cx="204" cy="148" r="3.5" fill="#ff6b35" opacity="0.9"/>
-  <circle cx="218" cy="148" r="3.5" fill="#ff6b35" opacity="0.7"/>
-  <circle cx="232" cy="148" r="3.5" fill="#3a5070" opacity="0.5"/>
-  <text x="230" y="165" fill="#3a5070" font-size="7.5" font-family="monospace" text-anchor="middle">Pwr  DSL  LAN</text>
+  <!-- LAN 2 annotation -->
+  <rect x="310" y="166" width="52" height="22" rx="3" fill="rgba(0,212,255,0.06)" stroke="#00d4ff" stroke-width="1"/>
+  <text x="336" y="178" fill="#00d4ff" font-size="8" font-family="sans-serif" text-anchor="middle">Laptop /</text>
+  <text x="336" y="187" fill="#00d4ff" font-size="8" font-family="sans-serif" text-anchor="middle">monitor</text>
 
-  <!-- Warning box on ISP router -->
-  <rect x="184" y="182" width="170" height="28" rx="3" fill="rgba(255,107,53,0.08)" stroke="#ff6b35" stroke-width="1"/>
-  <text x="269" y="196" fill="#ff6b35" font-size="9" font-family="sans-serif" text-anchor="middle" font-weight="bold">⚠ External line must be</text>
-  <text x="269" y="207" fill="#ff6b35" font-size="9" font-family="sans-serif" text-anchor="middle">plugged in for auth to occur</text>
+  <!-- ── LAN 1 → Old ISP Router WAN port (dashed orange — capture cable) ── -->
+  <line x1="282" y1="124" x2="282" y2="238" stroke="#ff3355" stroke-width="3" stroke-dasharray="8,4" marker-end="url(#arrowOrange)"/>
+  <!-- Cable label alongside the vertical line -->
+  <rect x="218" y="246" width="130" height="14" rx="3" fill="#1a0a0a" stroke="#ff3355" stroke-width="1"/>
+  <text x="283" y="256" fill="#ff3355" font-size="8" font-family="sans-serif" text-anchor="middle" font-weight="bold">Capture cable (Ethernet)</text>
 
-  <!-- Capture cable: ISP router WAN/ETH port → OpenWrt LAN 1 -->
-  <line x1="354" y1="121" x2="418" y2="121" stroke="#ff6b35" stroke-width="3" stroke-dasharray="8,4" marker-end="url(#arrowOrange)"/>
-  <rect x="366" y="106" width="44" height="14" rx="3" fill="#1a0a0a" stroke="#ff6b35" stroke-width="1"/>
-  <text x="388" y="116" fill="#ff6b35" font-size="8" font-family="sans-serif" text-anchor="middle" font-weight="bold">Eth cable</text>
+  <!-- ── 3. OLD ISP ROUTER (bottom centre) ── -->
+  <rect x="198" y="262" width="228" height="100" rx="6" fill="#0e1a10" stroke="#ff6b35" stroke-width="2"/>
+  <rect x="198" y="262" width="228" height="22" rx="6" fill="rgba(255,107,53,0.12)"/>
+  <rect x="198" y="276" width="228" height="8" fill="rgba(255,107,53,0.12)"/>
+  <text x="312" y="277" fill="#ff6b35" font-size="11" font-family="sans-serif" font-weight="bold" text-anchor="middle" letter-spacing="1">Old ISP Router</text>
+  <text x="312" y="289" fill="#ff6b35" font-size="8" font-family="sans-serif" text-anchor="middle">(being sniffed)</text>
 
-  <!-- OPENWRT ROUTER -->
-  <rect x="418" y="66" width="218" height="104" rx="6" fill="#0e1a28" stroke="#00d4ff" stroke-width="2"/>
-  <rect x="418" y="66" width="218" height="22" rx="6" fill="rgba(0,212,255,0.12)"/>
-  <rect x="418" y="80" width="218" height="8" fill="rgba(0,212,255,0.12)"/>
-  <text x="527" y="81" fill="#00d4ff" font-size="11" font-family="sans-serif" font-weight="bold" text-anchor="middle" letter-spacing="1">OpenWrt Router</text>
+  <!-- Old router ports -->
+  <text x="240" y="308" fill="#ff6b35" font-size="8" font-family="monospace" text-anchor="middle">WAN/ETH</text>
+  <rect x="224" y="311" width="32" height="13" rx="2" fill="#1a0e08" stroke="#ff6b35" stroke-width="1.5"/>
+  <circle cx="240" cy="318" r="3.5" fill="#ff6b35"/>
 
-  <!-- Ports -->
-  <text x="450" y="104" fill="#3a5070" font-size="8" font-family="monospace" text-anchor="middle">WAN</text>
-  <rect x="434" y="107" width="32" height="12" rx="2" fill="#1a2a3a" stroke="#1a3050" stroke-width="1"/>
-  <circle cx="450" cy="113" r="3" fill="#3a5070"/>
+  <text x="312" y="308" fill="#3a5070" font-size="8" font-family="monospace" text-anchor="middle">LAN ports</text>
+  <rect x="280" y="311" width="64" height="13" rx="2" fill="#0a1418" stroke="#1a3050" stroke-width="1"/>
+  <circle cx="296" cy="318" r="3" fill="#1a3050"/>
+  <circle cx="312" cy="318" r="3" fill="#1a3050"/>
+  <circle cx="328" cy="318" r="3" fill="#1a3050"/>
 
-  <text x="496" y="104" fill="#ff3355" font-size="8" font-family="monospace" text-anchor="middle">LAN 1</text>
-  <rect x="480" y="107" width="32" height="12" rx="2" fill="#1a0a0a" stroke="#ff3355" stroke-width="1.5"/>
-  <circle cx="496" cy="113" r="3.5" fill="#ff3355"/>
+  <!-- Old router LEDs -->
+  <circle cx="224" cy="344" r="3.5" fill="#ff6b35" opacity="0.9"/>
+  <circle cx="238" cy="344" r="3.5" fill="#ff6b35" opacity="0.7"/>
+  <circle cx="252" cy="344" r="3.5" fill="#3a5070" opacity="0.4"/>
+  <text x="270" y="360" fill="#3a5070" font-size="7.5" font-family="monospace" text-anchor="middle">Pwr  DSL  LAN</text>
 
-  <text x="542" y="104" fill="#00d4ff" font-size="8" font-family="monospace" text-anchor="middle">LAN 2</text>
-  <rect x="526" y="107" width="32" height="12" rx="2" fill="#0a1a1a" stroke="#00d4ff" stroke-width="1"/>
-  <circle cx="542" cy="113" r="3.5" fill="#00d4ff"/>
+  <!-- Note: no external line needed on old router -->
+  <rect x="350" y="300" width="66" height="50" rx="3" fill="rgba(0,0,0,0.3)" stroke="#1a3050" stroke-width="1"/>
+  <text x="383" y="316" fill="#3a5070" font-size="8" font-family="sans-serif" text-anchor="middle">No DSL/fibre</text>
+  <text x="383" y="328" fill="#3a5070" font-size="8" font-family="sans-serif" text-anchor="middle">needed on</text>
+  <text x="383" y="340" fill="#3a5070" font-size="8" font-family="sans-serif" text-anchor="middle">old router —</text>
+  <text x="383" y="352" fill="#00ff9d" font-size="8" font-family="sans-serif" text-anchor="middle" font-weight="bold">power only</text>
 
-  <text x="588" y="104" fill="#3a5070" font-size="8" font-family="monospace" text-anchor="middle">LAN 3</text>
-  <rect x="572" y="107" width="32" height="12" rx="2" fill="#1a2a3a" stroke="#1a3050" stroke-width="1"/>
-  <circle cx="588" cy="113" r="3" fill="#3a5070"/>
+  <!-- ── LAN 2 → Laptop ── -->
+  <line x1="426" y1="118" x2="540" y2="118" stroke="#00d4ff" stroke-width="2.5" marker-end="url(#arrowCyan)"/>
+  <rect x="452" y="104" width="58" height="13" rx="3" fill="#0a1520" stroke="#00d4ff" stroke-width="1"/>
+  <text x="481" y="114" fill="#00d4ff" font-size="8" font-family="sans-serif" text-anchor="middle">Eth cable</text>
 
-  <!-- OpenWrt LEDs -->
-  <circle cx="438" cy="138" r="3.5" fill="#00ff9d" opacity="0.9"/>
-  <circle cx="452" cy="138" r="3.5" fill="#00ff9d" opacity="0.8"/>
-  <circle cx="466" cy="138" r="3.5" fill="#ff6b35" opacity="0.8"/>
-  <circle cx="480" cy="138" r="3.5" fill="#ff3355" opacity="0.9"/>
-  <circle cx="494" cy="138" r="3.5" fill="#00d4ff" opacity="0.9"/>
-  <text x="527" y="154" fill="#3a5070" font-size="7.5" font-family="monospace" text-anchor="middle">Pwr  WAN  WiFi  LAN1  LAN2</text>
+  <!-- ── 4. LAPTOP (right) ── -->
+  <rect x="540" y="62" width="200" height="128" rx="6" fill="#0e1520" stroke="#00d4ff" stroke-width="1.5"/>
+  <rect x="556" y="72" width="168" height="74" rx="3" fill="#050a0f" stroke="#1a3050" stroke-width="1"/>
+  <rect x="562" y="77" width="156" height="12" rx="2" fill="#0c1520"/>
+  <text x="640" y="87" fill="#00d4ff" font-size="7" font-family="monospace" text-anchor="middle">LuCI › Network › ISP Recovery Wizard</text>
+  <rect x="562" y="93" width="156" height="46" rx="2" fill="#0a0e14"/>
+  <rect x="568" y="98" width="72" height="5" rx="1" fill="rgba(0,255,157,0.5)"/>
+  <rect x="568" y="107" width="110" height="4" rx="1" fill="rgba(0,212,255,0.3)"/>
+  <rect x="568" y="116" width="88" height="4" rx="1" fill="rgba(0,212,255,0.2)"/>
+  <rect x="568" y="125" width="50" height="7" rx="2" fill="rgba(0,212,255,0.4)"/>
+  <text x="590" y="131" fill="#0a0e14" font-size="7" font-family="sans-serif">▶ Start Capture</text>
+  <rect x="556" y="154" width="168" height="8" rx="2" fill="#1a2535"/>
+  <text x="640" y="175" fill="#3a5070" font-size="9" font-family="sans-serif" text-anchor="middle">Your monitoring laptop</text>
+  <text x="640" y="188" fill="#2a3a50" font-size="8" font-family="sans-serif" text-anchor="middle">LAN 2 (or WiFi)</text>
 
-  <!-- LAN 1 label -->
-  <rect x="470" y="160" width="52" height="26" rx="3" fill="rgba(255,51,85,0.08)" stroke="#ff3355" stroke-width="1"/>
-  <text x="496" y="172" fill="#ff3355" font-size="8" font-family="sans-serif" text-anchor="middle" font-weight="bold">⬆ Capture</text>
-  <text x="496" y="182" fill="#ff3355" font-size="8" font-family="sans-serif" text-anchor="middle">port only</text>
+  <!-- ── FLOW LABELS ── -->
+  <!-- Step A label: ONT to router -->
+  <rect x="18" y="200" width="118" height="36" rx="3" fill="rgba(58,80,112,0.12)" stroke="#3a5070" stroke-width="1"/>
+  <text x="77" y="215" fill="#3a5070" font-size="9" font-family="sans-serif" text-anchor="middle" font-weight="bold">① Normal WAN</text>
+  <text x="77" y="228" fill="#3a5070" font-size="9" font-family="sans-serif" text-anchor="middle">internet connection</text>
 
-  <!-- LAN 2 label -->
-  <rect x="526" y="160" width="52" height="26" rx="3" fill="rgba(0,212,255,0.06)" stroke="#00d4ff" stroke-width="1"/>
-  <text x="552" y="172" fill="#00d4ff" font-size="8" font-family="sans-serif" text-anchor="middle">⬆ Laptop</text>
-  <text x="552" y="182" fill="#00d4ff" font-size="8" font-family="sans-serif" text-anchor="middle">/ monitor</text>
+  <!-- Step B: OpenWrt in the middle -->
+  <rect x="198" y="200" width="228" height="36" rx="3" fill="rgba(0,212,255,0.04)" stroke="#00d4ff" stroke-width="1"/>
+  <text x="312" y="215" fill="#00d4ff" font-size="9" font-family="sans-serif" text-anchor="middle" font-weight="bold">② Sits between WAN and old router</text>
+  <text x="312" y="228" fill="#3a5070" font-size="9" font-family="sans-serif" text-anchor="middle">Intercepts auth traffic on LAN 1</text>
 
-  <!-- Monitoring cable: OpenWrt LAN2 → Laptop -->
-  <line x1="558" y1="113" x2="648" y2="113" stroke="#00d4ff" stroke-width="2.5" marker-end="url(#arrowCyan)"/>
-  <rect x="576" y="99" width="48" height="13" rx="3" fill="#0a1520" stroke="#00d4ff" stroke-width="1"/>
-  <text x="600" y="109" fill="#00d4ff" font-size="8" font-family="sans-serif" text-anchor="middle">Eth cable</text>
+  <!-- ── CHECKLIST ── -->
+  <rect x="540" y="212" width="340" height="222" rx="4" fill="rgba(0,0,0,0.25)" stroke="#1a3050" stroke-width="1"/>
+  <text x="710" y="232" fill="#3a5070" font-size="10" font-family="sans-serif" font-weight="bold" text-anchor="middle" letter-spacing="1">BEFORE YOU CLICK START</text>
+  <line x1="554" y1="238" x2="866" y2="238" stroke="#1a3050" stroke-width="1"/>
 
-  <!-- LAPTOP -->
-  <rect x="648" y="68" width="170" height="100" rx="6" fill="#0e1520" stroke="#00d4ff" stroke-width="1.5"/>
-  <rect x="662" y="76" width="142" height="62" rx="3" fill="#050a0f" stroke="#1a3050" stroke-width="1"/>
-  <rect x="668" y="81" width="130" height="11" rx="2" fill="#0c1520"/>
-  <text x="733" y="91" fill="#00d4ff" font-size="7" font-family="monospace" text-anchor="middle">LuCI › ISP Recovery Wizard</text>
-  <rect x="668" y="96" width="130" height="35" rx="2" fill="#0a0e14"/>
-  <rect x="672" y="100" width="60" height="5" rx="1" fill="rgba(0,255,157,0.5)"/>
-  <rect x="672" y="109" width="92" height="4" rx="1" fill="rgba(0,212,255,0.3)"/>
-  <rect x="672" y="117" width="76" height="4" rx="1" fill="rgba(0,212,255,0.2)"/>
-  <rect x="662" y="146" width="142" height="8" rx="2" fill="#1a2535"/>
-  <text x="733" y="165" fill="#3a5070" font-size="9" font-family="sans-serif" text-anchor="middle">Monitoring laptop (LAN 2)</text>
-  <text x="733" y="177" fill="#2a3a50" font-size="8" font-family="sans-serif" text-anchor="middle">or connect via WiFi instead</text>
+  <text x="558" y="258" fill="#ff6b35" font-size="13">◻</text>
+  <text x="576" y="258" fill="#c0d0e0" font-size="10" font-family="sans-serif">ONT/external line → OpenWrt <tspan fill="#00ff9d" font-weight="bold">WAN</tspan></text>
+  <text x="558" y="276" fill="#ff6b35" font-size="13">◻</text>
+  <text x="576" y="276" fill="#c0d0e0" font-size="10" font-family="sans-serif">Ethernet: old router WAN → OpenWrt <tspan fill="#ff3355" font-weight="bold">LAN 1</tspan></text>
+  <text x="558" y="294" fill="#ff6b35" font-size="13">◻</text>
+  <text x="576" y="294" fill="#c0d0e0" font-size="10" font-family="sans-serif">Old router powered on (no DSL needed)</text>
+  <text x="558" y="312" fill="#ff6b35" font-size="13">◻</text>
+  <text x="576" y="312" fill="#c0d0e0" font-size="10" font-family="sans-serif">Old router rebooted for fresh auth</text>
+  <text x="558" y="330" fill="#00d4ff" font-size="13">◻</text>
+  <text x="576" y="330" fill="#c0d0e0" font-size="10" font-family="sans-serif">Laptop on <tspan fill="#00d4ff" font-weight="bold">LAN 2</tspan>, LAN 3 or WiFi — not LAN 1</text>
+  <text x="558" y="348" fill="#00d4ff" font-size="13">◻</text>
+  <text x="576" y="348" fill="#c0d0e0" font-size="10" font-family="sans-serif">Wizard open in browser showing Step 3</text>
 
-  <!-- CHECKLIST -->
-  <rect x="28" y="228" width="804" height="206" rx="4" fill="rgba(0,0,0,0.25)" stroke="#1a3050" stroke-width="1"/>
-  <text x="430" y="248" fill="#3a5070" font-size="10" font-family="sans-serif" font-weight="bold" text-anchor="middle" letter-spacing="2">CHECKLIST — BEFORE CLICKING "START CAPTURE"</text>
-  <line x1="48" y1="254" x2="812" y2="254" stroke="#1a3050" stroke-width="1"/>
+  <!-- Bottom warning -->
+  <rect x="554" y="360" width="306" height="30" rx="3" fill="rgba(255,51,85,0.07)" stroke="rgba(255,51,85,0.3)" stroke-width="1"/>
+  <text x="707" y="371" fill="#ff6b35" font-size="9" font-family="sans-serif" text-anchor="middle" font-weight="bold">⚠ Old router has no DSL/fibre line needed</text>
+  <text x="707" y="383" fill="#ff6b35" font-size="9" font-family="sans-serif" text-anchor="middle">It authenticates via LAN 1 — power only required</text>
 
-  <!-- Left column -->
-  <text x="54" y="274" fill="#ff6b35" font-size="14">◻</text>
-  <text x="74" y="274" fill="#c0d0e0" font-size="11" font-family="sans-serif"><tspan fill="#ff6b35" font-weight="bold">1</tspan>  External DSL/fibre/coax line is plugged from the wall into the ISP router</text>
+  <!-- ── LEGEND ── -->
+  <rect x="18" y="400" width="510" height="44" rx="4" fill="rgba(0,0,0,0.25)" stroke="#1a3050" stroke-width="1"/>
+  <line x1="36" y1="418" x2="64" y2="418" stroke="#3a5070" stroke-width="2" stroke-dasharray="5,3"/>
+  <text x="72" y="422" fill="#3a5070" font-size="10" font-family="sans-serif">ONT / external line to WAN</text>
+  <line x1="220" y1="418" x2="248" y2="418" stroke="#ff3355" stroke-width="3" stroke-dasharray="8,4"/>
+  <text x="256" y="422" fill="#ff3355" font-size="10" font-family="sans-serif">Capture cable — LAN 1 only</text>
+  <line x1="390" y1="418" x2="418" y2="418" stroke="#00d4ff" stroke-width="2.5"/>
+  <text x="426" y="422" fill="#00d4ff" font-size="10" font-family="sans-serif">Monitoring — LAN 2/3 or WiFi</text>
 
-  <text x="54" y="296" fill="#ff6b35" font-size="14">◻</text>
-  <text x="74" y="296" fill="#c0d0e0" font-size="11" font-family="sans-serif"><tspan fill="#ff6b35" font-weight="bold">2</tspan>  ISP router is powered on and its DSL/WAN light is solid (not flashing)</text>
-
-  <text x="54" y="318" fill="#ff6b35" font-size="14">◻</text>
-  <text x="74" y="318" fill="#c0d0e0" font-size="11" font-family="sans-serif"><tspan fill="#ff6b35" font-weight="bold">3</tspan>  Ethernet cable: ISP router <tspan fill="#ff6b35" font-weight="bold">WAN/Internet port</tspan> connected to OpenWrt <tspan fill="#ff3355" font-weight="bold">LAN 1</tspan></text>
-
-  <!-- Right column -->
-  <text x="448" y="274" fill="#00d4ff" font-size="14">◻</text>
-  <text x="468" y="274" fill="#c0d0e0" font-size="11" font-family="sans-serif"><tspan fill="#00d4ff" font-weight="bold">4</tspan>  Your laptop is on LAN 2, LAN 3, or WiFi — <tspan fill="#ff3355">not LAN 1</tspan></text>
-
-  <text x="448" y="296" fill="#00d4ff" font-size="14">◻</text>
-  <text x="468" y="296" fill="#c0d0e0" font-size="11" font-family="sans-serif"><tspan fill="#00d4ff" font-weight="bold">5</tspan>  Wizard is open and showing Step 3 in your browser</text>
-
-  <text x="448" y="318" fill="#00d4ff" font-size="14">◻</text>
-  <text x="468" y="318" fill="#c0d0e0" font-size="11" font-family="sans-serif"><tspan fill="#00d4ff" font-weight="bold">6</tspan>  (Recommended) ISP router was rebooted — forces a clean re-authentication</text>
-
-  <!-- Legend -->
-  <line x1="48" y1="334" x2="812" y2="334" stroke="#1a3050" stroke-width="1"/>
-  <line x1="66" y1="352" x2="98" y2="352" stroke="#3a5070" stroke-width="2" stroke-dasharray="5,3"/>
-  <text x="106" y="356" fill="#3a5070" font-size="10" font-family="sans-serif">External ISP line (DSL/fibre/coax — from wall socket)</text>
-  <line x1="350" y1="352" x2="382" y2="352" stroke="#ff6b35" stroke-width="3" stroke-dasharray="8,4"/>
-  <text x="390" y="356" fill="#ff6b35" font-size="10" font-family="sans-serif">Capture cable — LAN 1 only (ISP router WAN port)</text>
-  <line x1="628" y1="352" x2="660" y2="352" stroke="#00d4ff" stroke-width="2.5"/>
-  <text x="668" y="356" fill="#00d4ff" font-size="10" font-family="sans-serif">Monitoring (LAN 2/3 or WiFi)</text>
-
-  <rect x="48" y="366" width="764" height="30" rx="3" fill="rgba(255,51,85,0.06)" stroke="rgba(255,51,85,0.2)" stroke-width="1"/>
-  <text x="430" y="385" fill="#ff6b35" font-size="11" font-family="sans-serif" text-anchor="middle" font-weight="bold">Without the external line connected the ISP router cannot authenticate — the capture will be empty</text>
+  <text x="272" y="440" fill="#3a5070" font-size="9" font-family="sans-serif" text-anchor="middle">The OpenWrt router sits between the internet and the old ISP router, intercepting its authentication</text>
 </svg>
