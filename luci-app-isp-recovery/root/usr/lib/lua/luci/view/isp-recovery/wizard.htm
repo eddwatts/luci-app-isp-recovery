@@ -745,9 +745,9 @@
     <div class="panel-title"><span class="icon">🔌</span> Step 3 — Connect the ISP Router</div>
 
     <div style="text-align:center; padding:16px 0 8px">
-      <div style="font-size:56px; margin-bottom:10px">🖥️ ——— 🔌 ——— 📦</div>
-      <div style="font-family:var(--head); font-size:13px; letter-spacing:2px; color:var(--dim)">
-        YOUR ROUTER (LAN 1) &nbsp;&nbsp;&nbsp;&nbsp; CABLE &nbsp;&nbsp;&nbsp;&nbsp; ISP ROUTER (WAN PORT)
+      <div style="font-size:48px; margin-bottom:8px">📞/🔆 ——— 📦 ——— 🔌 ——— 🖥️</div>
+      <div style="font-family:var(--head); font-size:11px; letter-spacing:2px; color:var(--dim)">
+        DSL/FIBRE/COAX LINE &nbsp;&nbsp; ISP ROUTER (WAN IN, LAN OUT) &nbsp;&nbsp; CABLE &nbsp;&nbsp; YOUR ROUTER (LAN 1)
       </div>
     </div>
 
@@ -755,28 +755,32 @@
       <strong style="color:var(--accent)">Do this now, in order:</strong><br><br>
       <div style="display:grid; grid-template-columns:24px 1fr; gap:10px; line-height:1.6">
         <span style="color:var(--accent2); font-weight:bold; text-align:center">1</span>
+        <span>Make sure the ISP router's <strong>external line is plugged in</strong> — this is the
+        phone cable (DSL/ADSL), fibre ONT cable, or coax cable that comes from the wall.
+        <strong style="color:var(--warn)">Without this the ISP router has nothing to authenticate to and the capture will be empty.</strong></span>
+
+        <span style="color:var(--accent2); font-weight:bold; text-align:center">2</span>
         <span>Take an Ethernet cable and plug one end into <strong style="color:var(--accent2)">LAN 1</strong>
         on your OpenWrt router. LAN 1 is currently offline so the link light will not come on yet — that's normal.</span>
 
-        <span style="color:var(--accent2); font-weight:bold; text-align:center">2</span>
+        <span style="color:var(--accent2); font-weight:bold; text-align:center">3</span>
         <span>Plug the other end into the <strong>WAN</strong> or <strong>Internet</strong> port on your
         ISP router — this is usually a different colour from the LAN ports, often blue or yellow.</span>
 
-        <span style="color:var(--accent2); font-weight:bold; text-align:center">3</span>
+        <span style="color:var(--accent2); font-weight:bold; text-align:center">4</span>
         <span>If the ISP router has been running for a while, <strong>reboot it now</strong> (unplug
         the power, wait 5 seconds, plug back in). A fresh boot forces it to re-authenticate from scratch,
         which gives us the best chance of capturing the credentials cleanly.</span>
 
-        <span style="color:var(--accent2); font-weight:bold; text-align:center">4</span>
-        <span>Wait for the ISP router's lights to settle (about 10–15 seconds after power-on),
-        then click the button below. The capture will start the moment you click.</span>
+        <span style="color:var(--accent2); font-weight:bold; text-align:center">5</span>
+        <span>Wait for the ISP router's lights to settle — the DSL or WAN light should be solid, not flashing
+        (about 30–60 seconds after power-on). Then click the button below.</span>
       </div>
     </div>
 
     <div class="warn-box">
-      ⚠ <strong>Do not click until the ISP router is booted and the cable is plugged in.</strong>
-      The capture only runs for 30 seconds — if the ISP router is still booting when you click,
-      you may miss the authentication window.
+      ⚠ <strong>Do not click until the ISP router's line is connected and its WAN light is solid.</strong>
+      The authentication happens in the first few seconds of the connection — click too early and you'll miss it.
     </div>
 
     <div class="btn-row">
