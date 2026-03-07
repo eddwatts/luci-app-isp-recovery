@@ -1,0 +1,103 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="860" height="520" viewBox="0 0 860 520">
+  <defs>
+    <linearGradient id="bg2" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#0a0e14"/><stop offset="100%" stop-color="#0c1118"/></linearGradient>
+    <radialGradient id="radarBg" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="rgba(0,212,255,0.08)"/><stop offset="100%" stop-color="rgba(0,212,255,0.01)"/></radialGradient>
+    <linearGradient id="sweep" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="rgba(0,212,255,0)" /><stop offset="100%" stop-color="rgba(0,212,255,0.5)"/></linearGradient>
+    <linearGradient id="timerGrad" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#00d4ff"/><stop offset="100%" stop-color="#00ff9d"/></linearGradient>
+  </defs>
+  <rect width="860" height="520" rx="10" fill="#1a1a2e"/>
+  <rect width="860" height="34" rx="10" fill="#151525"/>
+  <rect y="24" width="860" height="10" fill="#151525"/>
+  <circle cx="18" cy="17" r="5" fill="#ff5f57"/><circle cx="34" cy="17" r="5" fill="#febc2e"/><circle cx="50" cy="17" r="5" fill="#28c840"/>
+  <rect x="110" y="7" width="520" height="20" rx="10" fill="#0d0d1a"/>
+  <text x="370" y="21" fill="#444466" font-size="11" font-family="monospace" text-anchor="middle">192.168.1.1 — LuCI › Network › ISP Recovery</text>
+  <rect y="34" width="860" height="486" fill="url(#bg2)"/>
+  <rect y="34" width="860" height="38" fill="#0c1018"/>
+  <rect y="72" width="860" height="1" fill="#1a3050"/>
+  <text x="18" y="59" fill="#00d4ff" font-size="14" font-family="sans-serif" font-weight="bold" letter-spacing="2">OpenWrt</text>
+  <text x="214" y="59" fill="#00d4ff" font-size="12" font-family="sans-serif">Network ▾</text>
+
+  <!-- Header -->
+  <rect x="14" y="80" width="832" height="60" fill="#0e1520" rx="4"/>
+  <rect x="14" y="126" width="832" height="14" fill="#0e1520"/>
+  <text x="82" y="108" fill="#00d4ff" font-size="17" font-family="sans-serif" font-weight="bold" letter-spacing="3">WAN CREDENTIAL RECOVERY</text>
+  <text x="82" y="126" fill="#3a5070" font-size="10" font-family="monospace" letter-spacing="1">CAPTURE • ANALYSE • APPLY — Universal WAN Credential Recovery for OpenWrt</text>
+
+  <!-- Step track - step 4 active -->
+  <g transform="translate(26,152)">
+    <circle cx="46" cy="14" r="13" fill="rgba(0,255,157,0.12)" stroke="#00ff9d" stroke-width="2"/>
+    <text x="46" y="19" fill="#00ff9d" font-size="10" font-family="monospace" text-anchor="middle">✓</text>
+    <text x="46" y="36" fill="#00ff9d" font-size="8" font-family="monospace" text-anchor="middle">DETECT</text>
+    <line x1="59" y1="14" x2="134" y2="14" stroke="#00ff9d" stroke-width="1.5"/>
+    <circle cx="148" cy="14" r="13" fill="rgba(0,255,157,0.12)" stroke="#00ff9d" stroke-width="2"/>
+    <text x="148" y="19" fill="#00ff9d" font-size="10" font-family="monospace" text-anchor="middle">✓</text>
+    <text x="148" y="36" fill="#00ff9d" font-size="8" font-family="monospace" text-anchor="middle">PREPARE</text>
+    <line x1="161" y1="14" x2="236" y2="14" stroke="#00ff9d" stroke-width="1.5"/>
+    <circle cx="250" cy="14" r="13" fill="rgba(0,255,157,0.12)" stroke="#00ff9d" stroke-width="2"/>
+    <text x="250" y="19" fill="#00ff9d" font-size="10" font-family="monospace" text-anchor="middle">✓</text>
+    <text x="250" y="36" fill="#00ff9d" font-size="8" font-family="monospace" text-anchor="middle">CONNECT</text>
+    <line x1="263" y1="14" x2="338" y2="14" stroke="#00d4ff" stroke-width="1.5"/>
+    <circle cx="352" cy="14" r="13" fill="rgba(0,212,255,0.12)" stroke="#00d4ff" stroke-width="2"/>
+    <text x="352" y="19" fill="#00d4ff" font-size="12" font-weight="bold" font-family="monospace" text-anchor="middle">4</text>
+    <text x="352" y="36" fill="#00d4ff" font-size="8" font-family="monospace" text-anchor="middle">CAPTURE</text>
+    <line x1="365" y1="14" x2="440" y2="14" stroke="#1a3050" stroke-width="1.5" stroke-dasharray="4,3"/>
+    <circle cx="454" cy="14" r="13" fill="#0a0e14" stroke="#1a3050" stroke-width="1.5"/>
+    <text x="454" y="19" fill="#3a5070" font-size="12" font-weight="bold" font-family="monospace" text-anchor="middle">5</text>
+    <text x="454" y="36" fill="#3a5070" font-size="8" font-family="monospace" text-anchor="middle">AUTO-TEST</text>
+    <line x1="467" y1="14" x2="542" y2="14" stroke="#1a3050" stroke-width="1.5" stroke-dasharray="4,3"/>
+    <circle cx="556" cy="14" r="13" fill="#0a0e14" stroke="#1a3050" stroke-width="1.5"/>
+    <text x="556" y="19" fill="#3a5070" font-size="12" font-weight="bold" font-family="monospace" text-anchor="middle">6</text>
+    <text x="556" y="36" fill="#3a5070" font-size="8" font-family="monospace" text-anchor="middle">RESULTS</text>
+    <line x1="569" y1="14" x2="644" y2="14" stroke="#1a3050" stroke-width="1.5" stroke-dasharray="4,3"/>
+    <circle cx="658" cy="14" r="13" fill="#0a0e14" stroke="#1a3050" stroke-width="1.5"/>
+    <text x="658" y="19" fill="#3a5070" font-size="12" font-weight="bold" font-family="monospace" text-anchor="middle">7</text>
+    <text x="658" y="36" fill="#3a5070" font-size="8" font-family="monospace" text-anchor="middle">APPLY</text>
+  </g>
+
+  <!-- Panel -->
+  <rect x="14" y="208" width="832" height="294" fill="#0e1520" stroke="#1a3050" stroke-width="1" rx="4"/>
+  <text x="34" y="232" fill="#00d4ff" font-size="14" font-family="sans-serif" font-weight="bold" letter-spacing="2">📡  STEP 4 — CAPTURING TRAFFIC</text>
+  <line x1="14" y1="240" x2="846" y2="240" stroke="#1a3050" stroke-width="1"/>
+
+  <!-- Radar -->
+  <circle cx="108" cy="320" r="64" fill="url(#radarBg)" stroke="#1a3050" stroke-width="1"/>
+  <circle cx="108" cy="320" r="48" fill="none" stroke="#0d2040" stroke-width="1"/>
+  <circle cx="108" cy="320" r="32" fill="none" stroke="#0d2040" stroke-width="1"/>
+  <circle cx="108" cy="320" r="16" fill="none" stroke="#0d2040" stroke-width="1"/>
+  <line x1="44" y1="320" x2="172" y2="320" stroke="#0d2040" stroke-width="1"/>
+  <line x1="108" y1="256" x2="108" y2="384" stroke="#0d2040" stroke-width="1"/>
+  <!-- Sweep line -->
+  <line x1="108" y1="320" x2="165" y2="270" stroke="rgba(0,212,255,0.7)" stroke-width="2"/>
+  <path d="M108,320 L165,270 A64,64 0 0,0 172,320 Z" fill="rgba(0,212,255,0.12)"/>
+  <!-- Blips -->
+  <circle cx="138" cy="285" r="3" fill="#00ff9d" opacity="0.8"/>
+  <circle cx="80" cy="298" r="2" fill="#00d4ff" opacity="0.6"/>
+  <circle cx="120" cy="350" r="2.5" fill="#00ff9d" opacity="0.7"/>
+
+  <!-- Status text -->
+  <text x="196" y="275" fill="#c0d0e0" font-size="15" font-family="sans-serif" font-weight="bold">Capturing authentication handshake...</text>
+  <text x="196" y="295" fill="#3a5070" font-size="11" font-family="sans-serif">Monitoring: PPPoE • DHCP • VLAN 802.1Q • ARP • MAC</text>
+
+  <!-- Timer bar -->
+  <rect x="196" y="308" width="590" height="8" rx="4" fill="#0a0e14"/>
+  <rect x="196" y="308" width="354" height="8" rx="4" fill="url(#timerGrad)"/>
+  <text x="196" y="332" fill="#00d4ff" font-size="12" font-family="monospace">18 seconds remaining</text>
+
+  <!-- Info box -->
+  <rect x="28" y="356" width="614" height="26" fill="rgba(0,212,255,0.05)" rx="3"/>
+  <circle cx="44" cy="369" r="5" fill="#00d4ff"/>
+  <text x="56" y="373" fill="#3a5070" font-size="11" font-family="sans-serif">PPPoE authentication (PADI/PADS/CHAP/PAP)  •  DHCP assignment  •  VLAN tags  •  ARP/static IPoE</text>
+
+  <!-- Terminal log -->
+  <rect x="28" y="390" width="614" height="90" rx="3" fill="#070a0e" stroke="#1a3050" stroke-width="1"/>
+  <text x="40" y="408" fill="#00d4ff" font-size="10" font-family="monospace">$ tcpdump listening on lan1...</text>
+  <text x="40" y="424" fill="#00ff9d" font-size="10" font-family="monospace">[14:32:01] PPPoE PADI detected — ISP router requesting connection</text>
+  <text x="40" y="440" fill="#00ff9d" font-size="10" font-family="monospace">[14:32:01] PADO received from ISP — session negotiating</text>
+  <text x="40" y="456" fill="#00ff9d" font-size="10" font-family="monospace">[14:32:02] PPPoE PADR sent — username field detected</text>
+  <text x="40" y="472" fill="#00d4ff" font-size="10" font-family="monospace">[14:32:02] Auth method: PAP — extracting credentials...</text>
+
+  <!-- Stop button -->
+  <rect x="656" y="390" width="168" height="90" rx="3" fill="#0e1520" stroke="#ff3355" stroke-width="1"/>
+  <text x="740" y="432" fill="#ff3355" font-size="12" font-family="sans-serif" font-weight="bold" text-anchor="middle">⏹</text>
+  <text x="740" y="452" fill="#ff3355" font-size="12" font-family="sans-serif" text-anchor="middle">Stop Early</text>
+</svg>

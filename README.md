@@ -1,106 +1,173 @@
-# luci-app-wan-detect
+# luci-app-isp-recovery
 
-**WAN Credential Recovery Wizard for OpenWrt**  
-Automatically recover your ISP connection credentials (PPPoE, DHCP, static IP) by capturing
-and analysing the authentication handshake from your ISP's router or modem.
-Works with any ISP that uses standard protocols — Sky, BT, Virgin Media, TalkTalk, Plusnet,
-Vodafone, EE, and most others worldwide.
+**WAN Credential Recovery Wizard for OpenWrt**
+
+Automatically recover your ISP connection credentials by briefly connecting your ISP's router to a spare LAN port and capturing its authentication handshake. Detects PPPoE usernames and passwords, DHCP settings, static IP configuration, VLAN tags, and MAC addresses — then lets you apply them directly to your WAN port in one click.
+
+Works with any ISP that uses standard protocols — **Sky, BT, Virgin Media, TalkTalk, Plusnet, Vodafone, EE**, and most others worldwide.
 
 ---
 
-## What It Does
+## Screenshots
 
-1. **Detects** your WAN and available LAN ports automatically
-2. **Brings down** a spare LAN port so the ISP router sees a "disconnected" cable
-3. **Prompts you** to plug your ISP router into that LAN port
-4. **Starts a packet capture** (tcpdump) the moment you say it's plugged in
-5. **Captures 30 seconds** of traffic — enough for PPPoE handshake, DHCP offer, ARP, VLAN tags
-6. **Analyses** the capture for:
-   - PPPoE username and password (PAP cleartext)
-   - DHCP-assigned IP, gateway, netmask, DNS
-   - Static/IPoE IP configuration
-   - VLAN 802.1Q tag ID
-   - MAC address of ISP router (for MAC cloning)
-7. **Displays results** in a clean UI
-8. **Optionally applies** the settings directly to your WAN port
+### Physical Setup
+
+![Equipment setup diagram](docs/screenshots/00-setup-diagram.svg)
+
+> Your monitoring laptop connects on **LAN 2 or LAN 3** (or WiFi). **LAN 1 is reserved exclusively for the ISP router capture cable.**
+
+---
+
+### Step 1 — Welcome & Port Assignment
+
+![Step 1 - Welcome screen](docs/screenshots/01-welcome.svg)
+
+The wizard explains exactly which port to use and why before anything happens. Checks that `lan1` is present on your router hardware.
+
+---
+
+### Step 4 — Live Packet Capture
+
+![Step 4 - Capturing traffic](docs/screenshots/02-capturing.svg)
+
+A 30-second capture window with live terminal output. Shows the PPPoE handshake being detected in real time. Stop early once you see authentication traffic.
+
+---
+
+### Step 5 — Auto-Test
+
+![Step 5 - Auto-testing](docs/screenshots/03-autotest.svg)
+
+Automatically tests each detected configuration combination against your real WAN port — PPPoE plain, then with MAC clone, then with VLAN, then all three together. No manual trial and error.
+
+---
+
+### Step 6 — Results
+
+![Step 6 - Results](docs/screenshots/04-results.svg)
+
+Displays everything recovered: credentials, VLAN ID, MAC address, DNS. If auto-test connected successfully a green banner confirms you're already online.
+
+---
+
+## How It Works
+
+1. Takes **LAN 1 offline** so the ISP router sees a fresh cable connection
+2. You plug the **ISP router's WAN port into LAN 1** (reboot it for a clean auth)
+3. A **30-second packet capture** starts — catches PPPoE handshake, DHCP offer, ARP, VLAN tags
+4. The capture is **analysed** for credentials, IP settings, VLAN ID, and MAC address
+5. **Auto-test** tries each combination against your real WAN port (30s per attempt)
+6. On success: settings are live. On failure: fields are pre-filled for manual entry
 
 ---
 
 ## Requirements
 
 - OpenWrt 21.02 or later with LuCI installed
-- `tcpdump` package (`opkg install tcpdump`)
-- A spare LAN port to use as capture port (e.g. `lan1`, `eth1`)
+- `tcpdump` and `libpcap` — **installed and removed automatically** by the installer
+- A spare LAN port (`lan1`) — use LAN 2 or LAN 3 (or WiFi) for your monitoring device
 - Your ISP router powered on with an Ethernet cable
 
 ---
 
 ## Installation
 
-### Option A — Direct install via SSH (recommended)
+### Option 1 — git clone (recommended)
+
+SSH into your router, then:
 
 ```sh
-# Copy files to your router
-scp -r luci-app-isp-recovery/ root@192.168.1.1:/tmp/isp-recovery/
-scp install.sh root@192.168.1.1:/tmp/
-
-# SSH in and run installer
-ssh root@192.168.1.1
-sh /tmp/install.sh
+opkg update && opkg install git git-http
+cd /tmp
+git clone https://github.com/eddwatts/luci-app-isp-recovery.git
+sh /tmp/luci-app-isp-recovery/install.sh
 ```
 
-Then open LuCI → **Network → ISP Recovery**
+---
 
-### Option B — Build with OpenWrt SDK
+### Option 2 — wget (no git needed)
 
 ```sh
-# Copy to package directory
+cd /tmp
+wget -O luci-isp-recovery.tar.gz \
+  https://github.com/eddwatts/luci-app-isp-recovery/archive/refs/heads/main.tar.gz
+tar -xzf luci-isp-recovery.tar.gz
+sh luci-app-isp-recovery-main/install.sh
+```
+
+---
+
+### Option 3 — scp from your PC
+
+Clone the repo on your PC first, then:
+
+```sh
+scp -r luci-app-isp-recovery/ root@192.168.1.1:/tmp/
+ssh root@192.168.1.1 'sh /tmp/luci-app-isp-recovery/install.sh'
+```
+
+---
+
+### Option 4 — OpenWrt SDK
+
+```sh
 cp -r luci-app-isp-recovery/ ~/openwrt/package/feeds/luci/
-
-# Configure
 cd ~/openwrt
-make menuconfig
-# Enable: LuCI → Applications → luci-app-isp-recovery
-
+make menuconfig   # LuCI → Applications → luci-app-isp-recovery
 make package/luci-app-isp-recovery/compile
-# .ipk will be in bin/packages/...
-opkg install luci-app-isp-recovery_*.ipk
+opkg install bin/packages/*/luci/luci-app-isp-recovery_*.ipk
 ```
 
 ---
 
-## File Structure
+### After installing
 
+Open LuCI → **Network → ISP Recovery**
+
+Or navigate directly to:
 ```
-luci-app-isp-recovery/
-├── Makefile                          # OpenWrt package build
-├── install.sh                        # Direct SSH installer
-├── luasrc/
-│   └── controller/
-│       └── isp_recovery.lua          # LuCI controller (routes & AJAX handlers)
-└── root/
-    ├── usr/bin/
-    │   └── isp-recover.sh            # Backend: capture, analyse, apply
-    └── usr/lib/lua/luci/view/
-        └── isp-recovery/
-            └── wizard.htm            # Wizard UI (HTML/CSS/JS + LuCI template)
+http://192.168.1.1/cgi-bin/luci/admin/network/isp_recovery/wizard
 ```
 
 ---
 
-## Notes on PPPoE Password Recovery
+## Uninstall
 
-- **PAP mode**: Password is sent in cleartext — fully recoverable ✓
-- **CHAP mode**: Password is hashed (MD5 challenge-response) — hash captured but not crackable without a dictionary attack
-- If CHAP is used and the password isn't recovered, try logging into your ISP router's admin panel directly, or contact your ISP support
+```sh
+sh /tmp/luci-app-isp-recovery/install.sh uninstall
+```
+
+Removes all plugin files, and removes `tcpdump`/`libpcap` **only if this tool was the one that installed them**. All capture files are cleared automatically.
+
+If you no longer have the install script:
+```sh
+wget -O - https://raw.githubusercontent.com/eddwatts/luci-app-isp-recovery/main/install.sh \
+  | sh -s uninstall
+```
+
+---
+
+## PPPoE Password Recovery Notes
+
+| Auth method | Password recovered? | Notes |
+|---|---|---|
+| **PAP** | ✅ Yes — fully recovered | Sent in cleartext during handshake |
+| **CHAP** | ⚠️ Username only | MD5-hashed — not directly recoverable |
+| **MS-CHAPv2** | ⚠️ Username only | Vulnerable to offline dictionary attack |
+
+If CHAP is used: log into the ISP router's admin panel (`192.168.0.1`), contact your ISP to re-provision, or extract the hash from the PCAP for an offline dictionary attack with hashcat.
+
+---
 
 ## VLAN Support
 
-If your ISP uses a VLAN tag (common with some UK providers), the tool will detect the 802.1Q tag ID and automatically configure `wan.ifname` with the correct VLAN subinterface (e.g. `eth0.101`).
+Some ISPs (common with UK providers) require a VLAN tag on the WAN interface. The tool detects the 802.1Q tag automatically and the auto-test tries both tagged and untagged variants.
+
+---
 
 ## MAC Cloning
 
-The ISP may have registered your old router's MAC address. The tool captures it and offers to clone it onto your new WAN port.
+Many ISPs register the MAC address of your old router. This tool captures it and offers to clone it onto your WAN port automatically.
 
 ---
 
@@ -108,21 +175,54 @@ The ISP may have registered your old router's MAC address. The tool captures it 
 
 | Problem | Fix |
 |---|---|
-| "No capture file found" | Ensure tcpdump is installed: `opkg install tcpdump` |
-| Empty results | Try increasing capture time — edit `CAPTURE_DURATION=30` in `isp-recover.sh` |
-| Can't find LAN port | Manually enter port name in the wizard (e.g. `eth1`, `lan2`) |
-| LuCI shows 404 | Clear cache: `rm /tmp/luci-indexcache && /etc/init.d/uhttpd restart` |
-| Wizard not in menu | Check controller installed: `ls /usr/lib/lua/luci/controller/isp_recovery.lua` |
+| `tcpdump: not found` | `opkg update && opkg install tcpdump` |
+| Empty results after capture | Reboot the ISP router before capture so it re-authenticates |
+| LAN 1 not found warning | Check port names under Network → Switch in LuCI |
+| Auto-test all failed | CHAP password likely needed — fill in manually in Step 7 |
+| LuCI shows 404 on wizard | `rm /tmp/luci-indexcache && /etc/init.d/uhttpd restart` |
+| Capture looks empty | Increase: edit `CAPTURE_DURATION=30` in `/usr/bin/isp-recover.sh` |
 
 ---
 
 ## Security Note
 
-The captured PCAP file is stored at `/tmp/isp-capture.pcap`. This may contain your ISP credentials in plaintext. Delete it after use:
+The PCAP at `/tmp/isp-capture.pcap` may contain credentials in plaintext. It lives in RAM and does not survive a reboot. Delete immediately after use:
 
 ```sh
-rm -f /tmp/isp-capture.pcap /tmp/isp-results.json
+rm -f /tmp/isp-capture.pcap /tmp/isp-results.json /tmp/isp-autotest.json
 ```
+
+The uninstall script clears all of these automatically.
+
+---
+
+## File Structure
+
+```
+luci-app-isp-recovery/
+├── install.sh                              # Installer / uninstaller
+├── luci-app-isp-recovery/
+│   ├── Makefile                            # OpenWrt SDK package build
+│   ├── luasrc/controller/
+│   │   └── isp_recovery.lua               # LuCI controller & AJAX endpoints
+│   └── root/
+│       ├── usr/bin/
+│       │   └── isp-recover.sh             # Backend: capture, analyse, autotest, apply
+│       └── usr/lib/lua/luci/view/isp-recovery/
+│           └── wizard.htm                 # 7-step wizard UI
+└── docs/screenshots/                      # Diagrams for this README
+```
+
+---
+
+## Contributing
+
+Issues and pull requests welcome at [github.com/eddwatts/luci-app-isp-recovery](https://github.com/eddwatts/luci-app-isp-recovery).
+
+Useful contributions:
+- Testing on different OpenWrt hardware and reporting results
+- ISP-specific VLAN IDs and auth methods (improves auto-test ordering)
+- CHAP/MS-CHAPv2 recovery improvements
 
 ---
 
