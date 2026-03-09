@@ -1,0 +1,107 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="860" height="560" viewBox="0 0 860 560">
+  <defs>
+    <linearGradient id="bg4" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#0a0e14"/><stop offset="100%" stop-color="#0c1118"/></linearGradient>
+  </defs>
+  <rect width="860" height="560" rx="10" fill="#1a1a2e"/>
+  <rect width="860" height="34" rx="10" fill="#151525"/>
+  <rect y="24" width="860" height="10" fill="#151525"/>
+  <circle cx="18" cy="17" r="5" fill="#ff5f57"/><circle cx="34" cy="17" r="5" fill="#febc2e"/><circle cx="50" cy="17" r="5" fill="#28c840"/>
+  <rect x="110" y="7" width="520" height="20" rx="10" fill="#0d0d1a"/>
+  <text x="370" y="21" fill="#444466" font-size="11" font-family="monospace" text-anchor="middle">192.168.1.1 — LuCI › Network › ISP Recovery</text>
+  <rect y="34" width="860" height="526" fill="url(#bg4)"/>
+  <rect y="34" width="860" height="38" fill="#0c1018"/>
+  <rect y="72" width="860" height="1" fill="#1a3050"/>
+  <text x="18" y="59" fill="#00d4ff" font-size="14" font-family="sans-serif" font-weight="bold" letter-spacing="2">OpenWrt</text>
+  <text x="214" y="59" fill="#00d4ff" font-size="12" font-family="sans-serif">Network ▾</text>
+
+  <rect x="14" y="80" width="832" height="50" fill="#0e1520" rx="4"/>
+  <rect x="14" y="116" width="832" height="14" fill="#0e1520"/>
+  <text x="82" y="102" fill="#00d4ff" font-size="17" font-family="sans-serif" font-weight="bold" letter-spacing="3">WAN CREDENTIAL RECOVERY</text>
+  <text x="82" y="120" fill="#3a5070" font-size="10" font-family="monospace" letter-spacing="1">CAPTURE • ANALYSE • APPLY — Universal WAN Credential Recovery for OpenWrt</text>
+
+  <!-- Step track - step 6 active -->
+  <g transform="translate(26,142)">
+    <circle cx="46" cy="14" r="13" fill="rgba(0,255,157,0.12)" stroke="#00ff9d" stroke-width="2"/>
+    <text x="46" y="19" fill="#00ff9d" font-size="10" font-family="monospace" text-anchor="middle">✓</text>
+    <text x="46" y="36" fill="#00ff9d" font-size="8" font-family="monospace" text-anchor="middle">DETECT</text>
+    <line x1="59" y1="14" x2="134" y2="14" stroke="#00ff9d" stroke-width="1.5"/>
+    <circle cx="148" cy="14" r="13" fill="rgba(0,255,157,0.12)" stroke="#00ff9d" stroke-width="2"/>
+    <text x="148" y="19" fill="#00ff9d" font-size="10" font-family="monospace" text-anchor="middle">✓</text>
+    <text x="148" y="36" fill="#00ff9d" font-size="8" font-family="monospace" text-anchor="middle">PREPARE</text>
+    <line x1="161" y1="14" x2="236" y2="14" stroke="#00ff9d" stroke-width="1.5"/>
+    <circle cx="250" cy="14" r="13" fill="rgba(0,255,157,0.12)" stroke="#00ff9d" stroke-width="2"/>
+    <text x="250" y="19" fill="#00ff9d" font-size="10" font-family="monospace" text-anchor="middle">✓</text>
+    <text x="250" y="36" fill="#00ff9d" font-size="8" font-family="monospace" text-anchor="middle">CONNECT</text>
+    <line x1="263" y1="14" x2="338" y2="14" stroke="#00ff9d" stroke-width="1.5"/>
+    <circle cx="352" cy="14" r="13" fill="rgba(0,255,157,0.12)" stroke="#00ff9d" stroke-width="2"/>
+    <text x="352" y="19" fill="#00ff9d" font-size="10" font-family="monospace" text-anchor="middle">✓</text>
+    <text x="352" y="36" fill="#00ff9d" font-size="8" font-family="monospace" text-anchor="middle">CAPTURE</text>
+    <line x1="365" y1="14" x2="440" y2="14" stroke="#00ff9d" stroke-width="1.5"/>
+    <circle cx="454" cy="14" r="13" fill="rgba(0,255,157,0.12)" stroke="#00ff9d" stroke-width="2"/>
+    <text x="454" y="19" fill="#00ff9d" font-size="10" font-family="monospace" text-anchor="middle">✓</text>
+    <text x="454" y="36" fill="#00ff9d" font-size="8" font-family="monospace" text-anchor="middle">AUTO-TEST</text>
+    <line x1="467" y1="14" x2="542" y2="14" stroke="#00d4ff" stroke-width="1.5"/>
+    <circle cx="556" cy="14" r="13" fill="rgba(0,212,255,0.12)" stroke="#00d4ff" stroke-width="2"/>
+    <text x="556" y="19" fill="#00d4ff" font-size="12" font-weight="bold" font-family="monospace" text-anchor="middle">6</text>
+    <text x="556" y="36" fill="#00d4ff" font-size="8" font-family="monospace" text-anchor="middle">RESULTS</text>
+    <line x1="569" y1="14" x2="644" y2="14" stroke="#1a3050" stroke-width="1.5" stroke-dasharray="4,3"/>
+    <circle cx="658" cy="14" r="13" fill="#0a0e14" stroke="#1a3050" stroke-width="1.5"/>
+    <text x="658" y="19" fill="#3a5070" font-size="12" font-weight="bold" font-family="monospace" text-anchor="middle">7</text>
+    <text x="658" y="36" fill="#3a5070" font-size="8" font-family="monospace" text-anchor="middle">APPLY</text>
+  </g>
+
+  <!-- Panel -->
+  <rect x="14" y="198" width="832" height="344" fill="#0e1520" stroke="#1a3050" stroke-width="1" rx="4"/>
+  <text x="34" y="222" fill="#00d4ff" font-size="14" font-family="sans-serif" font-weight="bold" letter-spacing="2">📋  STEP 6 — RESULTS</text>
+  <line x1="14" y1="230" x2="846" y2="230" stroke="#1a3050" stroke-width="1"/>
+
+  <!-- Success banner -->
+  <rect x="28" y="240" width="804" height="44" rx="3" fill="rgba(0,255,157,0.07)" stroke="#00ff9d" stroke-width="1"/>
+  <text x="44" y="258" fill="#00ff9d" font-size="14" font-family="sans-serif" font-weight="bold" letter-spacing="1">✓  CONNECTION ESTABLISHED — PPPoE + VLAN + MAC</text>
+  <text x="44" y="276" fill="#c0d0e0" font-size="11" font-family="sans-serif">Your router is online. The settings are already live on your WAN port.  <tspan fill="#3a5070">(3 attempts needed)</tspan></text>
+
+  <!-- Auth badges -->
+  <rect x="28" y="296" width="60" height="22" rx="11" fill="rgba(255,107,53,0.15)" stroke="#ff6b35" stroke-width="1"/>
+  <text x="58" y="311" fill="#ff6b35" font-size="11" font-family="sans-serif" font-weight="bold" text-anchor="middle">PPPoE</text>
+  <rect x="96" y="296" width="80" height="22" rx="11" fill="rgba(0,255,157,0.12)" stroke="#00ff9d" stroke-width="1"/>
+  <text x="136" y="311" fill="#00ff9d" font-size="11" font-family="sans-serif" font-weight="bold" text-anchor="middle">high confidence</text>
+
+  <!-- Results grid left col -->
+  <rect x="28" y="328" width="390" height="130" fill="rgba(0,0,0,0.2)" stroke="#1a3050" stroke-width="1" rx="3"/>
+  <text x="44" y="348" fill="#00d4ff" font-size="12" font-family="sans-serif" font-weight="bold">🔐  PPPoE Credentials</text>
+  <line x1="28" y1="354" x2="418" y2="354" stroke="#1a3050" stroke-width="1"/>
+  <text x="44" y="374" fill="#3a5070" font-size="11" font-family="monospace">Username</text>
+  <text x="200" y="374" fill="#00ff9d" font-size="12" font-family="monospace" font-weight="bold">user@sky.com</text>
+  <text x="44" y="396" fill="#3a5070" font-size="11" font-family="monospace">Password</text>
+  <text x="200" y="396" fill="#00ff9d" font-size="12" font-family="monospace" font-weight="bold">••••••••••</text>
+  <text x="44" y="418" fill="#3a5070" font-size="11" font-family="monospace">Auth Mode</text>
+  <text x="200" y="418" fill="#c0d0e0" font-size="12" font-family="monospace">PAP (cleartext recovered)</text>
+  <text x="44" y="440" fill="#3a5070" font-size="11" font-family="monospace">VLAN ID</text>
+  <text x="200" y="440" fill="#c0d0e0" font-size="12" font-family="monospace">101</text>
+
+  <!-- Results grid right col -->
+  <rect x="432" y="328" width="400" height="130" fill="rgba(0,0,0,0.2)" stroke="#1a3050" stroke-width="1" rx="3"/>
+  <text x="448" y="348" fill="#00d4ff" font-size="12" font-family="sans-serif" font-weight="bold">🖧  Network Details</text>
+  <line x1="432" y1="354" x2="832" y2="354" stroke="#1a3050" stroke-width="1"/>
+  <text x="448" y="374" fill="#3a5070" font-size="11" font-family="monospace">MAC Address</text>
+  <text x="580" y="374" fill="#c0d0e0" font-size="12" font-family="monospace">a8:4e:3f:12:88:cd</text>
+  <text x="448" y="396" fill="#3a5070" font-size="11" font-family="monospace">DNS Primary</text>
+  <text x="580" y="396" fill="#c0d0e0" font-size="12" font-family="monospace">1.1.1.1</text>
+  <text x="448" y="418" fill="#3a5070" font-size="11" font-family="monospace">DNS Secondary</text>
+  <text x="580" y="418" fill="#c0d0e0" font-size="12" font-family="monospace">1.0.0.1</text>
+  <text x="448" y="440" fill="#3a5070" font-size="11" font-family="monospace">PCAP file</text>
+  <text x="580" y="440" fill="#3a5070" font-size="11" font-family="monospace">/tmp/isp-capture.pcap</text>
+
+  <!-- Guidance -->
+  <rect x="28" y="468" width="804" height="26" fill="rgba(0,255,157,0.04)" rx="3"/>
+  <rect x="28" y="468" width="3" height="26" fill="#00ff9d"/>
+  <text x="44" y="485" fill="#c0d0e0" font-size="11" font-family="sans-serif">✅  You're done! Step 7 is optional — only needed if you want to fine-tune the settings.</text>
+
+  <!-- Buttons -->
+  <rect x="28" y="503" width="210" height="32" rx="3" fill="#00ff9d"/>
+  <text x="133" y="524" fill="#0a0e14" font-size="12" font-family="sans-serif" font-weight="bold" text-anchor="middle">→  Review &amp; Fine-tune</text>
+  <rect x="248" y="503" width="150" height="32" rx="3" fill="#0e1520" stroke="#1a3050" stroke-width="1"/>
+  <text x="323" y="524" fill="#c0d0e0" font-size="12" font-family="sans-serif" text-anchor="middle">⬇  Download PCAP</text>
+  <rect x="408" y="503" width="160" height="32" rx="3" fill="#0e1520" stroke="#ff3355" stroke-width="1"/>
+  <text x="488" y="524" fill="#ff3355" font-size="12" font-family="sans-serif" text-anchor="middle">✕  Restore Original</text>
+</svg>
