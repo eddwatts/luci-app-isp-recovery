@@ -1,0 +1,266 @@
+#!/bin/sh
+# rpcd service script for luci-app-isp-recovery
+#
+# Migration notes
+# ───────────────
+# OLD: LuCI Lua controller (isp_recovery.lua) called isp-recover.sh via
+#      io.popen() and wrote JSON responses using luci.http.write().
+#
+# NEW: This script is registered as an rpcd service. rpcd calls it over
+#      ubus as "luci.isp_recovery". Each method maps 1-to-1 to the old
+#      Lua action_*() functions. isp-recover.sh is UNCHANGED.
+#
+# The script is called by rpcd with:
+#   /usr/libexec/rpcd/isp_recovery <method> [params-json]
+#
+# rpcd passes ubus call parameters as a JSON string on stdin (when the
+# method requires input). We use jshn to parse them.
+#
+# Install path: /usr/libexec/rpcd/isp_recovery
+# Must be executable.
+#
+# Registration: add to /etc/config/rpcd or let the package init.d handle it.
+# The ACL is in /usr/share/rpcd/acl.d/luci-app-isp-recovery.json.
+
+. /usr/share/libubox/jshn.sh
+
+SCRIPT="/usr/bin/isp-recover.sh"
+
+# ── list: tell rpcd what methods this service exposes ─────────────────────
+# rpcd calls us with "list" to discover available methods and their schemas.
+cmd_list() {
+    cat << 'EOF'
+{
+  "detect":            {},
+  "setup":             { "port": "string" },
+  "capture":           { "port": "string" },
+  "stop":              {},
+  "autotest":          {},
+  "autotest_results":  {},
+  "results":           {},
+  "apply": {
+    "auth_type": "string",
+    "username":  "string",
+    "password":  "string",
+    "ip":        "string",
+    "gateway":   "string",
+    "netmask":   "string",
+    "dns1":      "string",
+    "dns2":      "string",
+    "mac":       "string",
+    "vlan":      "string"
+  },
+  "restore":  {},
+  "cleanup":  {},
+  "get_log":  { "lines": "number" },
+  "state":    {},
+  "isp_info": {},
+  "db_submit": { "mac_clone": "string", "attempts": "number" }
+}
+EOF
+}
+
+# ── call: dispatch to the right handler ───────────────────────────────────
+cmd_call() {
+    local method="$1"
+
+    # Read ubus params from stdin into jshn environment
+    local PARAMS
+    read -r PARAMS
+    json_load "${PARAMS:-{}}" 2>/dev/null
+
+    case "$method" in
+
+        # ── detect ────────────────────────────────────────────────────────
+        # OLD: action_detect() → run_script("detect") → reads /tmp/isp-ifaces.json
+        detect)
+            "$SCRIPT" detect > /dev/null 2>&1
+            local f="/tmp/isp-ifaces.json"
+            if [ -f "$f" ]; then
+                cat "$f"
+            else
+                echo '{"error":"Could not detect interfaces"}'
+            fi
+            ;;
+
+        # ── setup ─────────────────────────────────────────────────────────
+        # OLD: action_setup() → run_script("setup <port>")
+        setup)
+            local port
+            json_get_var port port
+            # Sanitize: allow only word chars, hyphens, underscores
+            echo "$port" | grep -qE '^[A-Za-z0-9_-]+$' || port="lan1"
+            port="${port:-lan1}"
+            "$SCRIPT" setup "$port" > /dev/null 2>&1
+            echo '{"status":"ok"}'
+            ;;
+
+        # ── capture ───────────────────────────────────────────────────────
+        # OLD: action_capture() → run_script("capture <port>")
+        capture)
+            local port
+            json_get_var port port
+            echo "$port" | grep -qE '^[A-Za-z0-9_-]+$' || port="lan1"
+            port="${port:-lan1}"
+            # Fire and forget — tcpdump runs in background inside the script
+            "$SCRIPT" capture "$port" > /dev/null 2>&1
+            echo '{"status":"ok","message":"Capture started"}'
+            ;;
+
+        # ── stop ──────────────────────────────────────────────────────────
+        # OLD: action_stop() → run_script("stop") → os.execute("sleep 2")
+        #      → reads /tmp/isp-results.json
+        stop)
+            "$SCRIPT" stop > /dev/null 2>&1
+            sleep 2
+            local f="/tmp/isp-results.json"
+            if [ -f "$f" ]; then
+                cat "$f"
+            else
+                echo '{"status":"error","error":"No results found"}'
+            fi
+            ;;
+
+        # ── autotest ─────────────────────────────────────────────────────
+        # OLD: action_autotest() → os.execute("... autotest ... &")
+        autotest)
+            "$SCRIPT" autotest >> /tmp/isp-recovery.log 2>&1 &
+            echo '{"status":"started","message":"Auto-test sequence running in background"}'
+            ;;
+
+        # ── autotest_results ──────────────────────────────────────────────
+        # OLD: action_autotest_results() → reads /tmp/isp-autotest.json
+        autotest_results)
+            local f="/tmp/isp-autotest.json"
+            if [ -f "$f" ]; then
+                cat "$f"
+            else
+                echo '{"status":"not_started"}'
+            fi
+            ;;
+
+        # ── results ───────────────────────────────────────────────────────
+        # OLD: action_results() → reads /tmp/isp-results.json
+        results)
+            local f="/tmp/isp-results.json"
+            if [ -f "$f" ]; then
+                cat "$f"
+            else
+                echo '{"status":"no_results"}'
+            fi
+            ;;
+
+        # ── apply ─────────────────────────────────────────────────────────
+        # OLD: action_apply() built an env-var string and called io.popen(env .. " isp-recover.sh apply")
+        # NEW: params arrive as clean JSON fields; we export them as env vars then call the script.
+        #      No shell-injection risk because jshn does the JSON parsing, not eval/echo.
+        apply)
+            local auth_type username password ip gateway netmask dns1 dns2 mac vlan
+            json_get_var auth_type auth_type
+            json_get_var username  username
+            json_get_var password  password
+            json_get_var ip        ip
+            json_get_var gateway   gateway
+            json_get_var netmask   netmask
+            json_get_var dns1      dns1
+            json_get_var dns2      dns2
+            json_get_var mac       mac
+            json_get_var vlan      vlan
+
+            export APPLY_AUTH_TYPE="$auth_type"
+            export APPLY_USER="$username"
+            export APPLY_PASS="$password"
+            export APPLY_IP="$ip"
+            export APPLY_GW="$gateway"
+            export APPLY_NM="$netmask"
+            export APPLY_DNS1="$dns1"
+            export APPLY_DNS2="$dns2"
+            export APPLY_MAC="$mac"
+            export APPLY_VLAN="$vlan"
+
+            "$SCRIPT" apply > /dev/null 2>&1
+            echo '{"status":"ok","message":"Settings applied, network restarting..."}'
+            ;;
+
+        # ── restore ───────────────────────────────────────────────────────
+        # OLD: action_restore() → run_script("restore")
+        restore)
+            "$SCRIPT" restore > /dev/null 2>&1
+            echo '{"status":"ok","message":"Original config restored"}'
+            ;;
+
+        # ── cleanup ───────────────────────────────────────────────────────
+        cleanup)
+            "$SCRIPT" cleanup > /dev/null 2>&1
+            echo '{"status":"ok"}'
+            ;;
+
+        # ── get_log ───────────────────────────────────────────────────────
+        # OLD: action_log() — Lua read the file, sliced last N lines,
+        #      returned plain text via luci.http.write()
+        # NEW: we return JSON with a "log" key so the JS view can use it
+        #      directly from the rpc.declare() result object.
+        get_log)
+            local lines
+            json_get_var lines lines
+            lines="${lines:-50}"
+            # Clamp to 200
+            [ "$lines" -gt 200 ] 2>/dev/null && lines=200
+            local f="/tmp/isp-recovery.log"
+            if [ -f "$f" ]; then
+                local content
+                content=$(tail -n "$lines" "$f" 2>/dev/null | \
+                    # Escape for JSON: backslash, double-quote, newline, tab
+                    sed 's/\\/\\\\/g; s/"/\\"/g' | \
+                    awk '{printf "%s\\n", $0}' | \
+                    sed 's/\\n$//')
+                printf '{"log":"%s"}\n' "$content"
+            else
+                echo '{"log":"No log yet"}'
+            fi
+            ;;
+
+        # ── state ─────────────────────────────────────────────────────────
+        # OLD: action_state() → reads /tmp/isp-recovery.state
+        state)
+            local s
+            s=$(cat /tmp/isp-recovery.state 2>/dev/null || echo "idle")
+            printf '{"state":"%s"}\n' "$s"
+            ;;
+
+        # ── isp_info ──────────────────────────────────────────────────────
+        isp_info)
+            local f="/tmp/isp-info.json"
+            if [ -f "$f" ]; then cat "$f"; else echo '{"status":"not_ready"}'; fi
+            ;;
+
+        # ── db_submit ─────────────────────────────────────────────────────
+        # Triggered by the JS confirm UI on the results page.
+        # Passes mac_clone, attempts, and auto_connected to db_submit_config.
+        # Runs in background so the HTTP response returns immediately.
+        db_submit)
+            local mac_clone attempts
+            json_get_var mac_clone mac_clone
+            json_get_var attempts  attempts
+            mac_clone="${mac_clone:-no}"
+            attempts="${attempts:-1}"
+            "$SCRIPT" db_submit "$mac_clone" "$attempts" "yes" >> /tmp/isp-recovery.log 2>&1 &
+            echo '{"status":"queued"}'
+            ;;
+
+        *)
+            echo '{"error":"unknown method"}'
+            exit 1
+            ;;
+    esac
+}
+
+# ── Entry point ────────────────────────────────────────────────────────────
+case "$1" in
+    list) cmd_list ;;
+    call) cmd_call "$2" ;;
+    *)
+        echo "Usage: $0 {list|call <method>}" >&2
+        exit 1
+        ;;
+esac

@@ -1,0 +1,31 @@
+{
+  "luci-app-isp-recovery": {
+    "description": "Grant LuCI access to ISP Recovery rpcd service",
+    "read": {
+      "ubus": {
+        "luci.isp_recovery": [
+          "detect",
+          "autotest_results",
+          "results",
+          "get_log",
+          "state",
+          "isp_info"
+        ]
+      }
+    },
+    "write": {
+      "ubus": {
+        "luci.isp_recovery": [
+          "setup",
+          "capture",
+          "stop",
+          "autotest",
+          "apply",
+          "restore",
+          "cleanup",
+          "db_submit"
+        ]
+      }
+    }
+  }
+}
