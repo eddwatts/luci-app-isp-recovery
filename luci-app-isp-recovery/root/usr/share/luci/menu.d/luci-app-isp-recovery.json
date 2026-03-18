@@ -1,0 +1,14 @@
+{
+    "admin/network/isp_recovery": {
+        "title": "ISP Recovery",
+        "order": 90,
+        "action": {
+            "type": "view",
+            "path": "network/isp_recovery"
+        },
+        "depends": {
+            "acl": ["luci-app-isp-recovery"],
+            "uci": {}
+        }
+    }
+}

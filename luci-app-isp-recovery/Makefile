@@ -11,20 +11,15 @@ PKG_LICENSE:=GPL-2.0
 # v1.x: Lua controller (luci/controller/isp_recovery.lua) +
 #        HTM template  (luci/view/isp-recovery/wizard.htm)
 #
-# v2.x: No Lua controller at all.
-#        luci-base ≥ 20.x includes the JS framework (L.view, L.rpc, etc.)
-#        The single JS view file renders everything and calls the backend
-#        via ubus/rpcd instead of AJAX to Lua endpoints.
+# v2.0: Initial JS migration — had wrong paths (view/isp-recovery/wizard.js,
+#        rpcd/isp_recovery without luci. prefix, no menu.d registration).
 #
-#   OLD install paths:
-#     /usr/lib/lua/luci/controller/isp_recovery.lua
-#     /usr/lib/lua/luci/view/isp-recovery/wizard.htm
-#
-#   NEW install paths:
-#     /www/luci-static/resources/view/isp-recovery/wizard.js   ← JS view
-#     /usr/libexec/rpcd/isp_recovery                           ← rpcd service
+# v2.1: Corrected paths:
+#     /www/luci-static/resources/view/network/isp_recovery.js  ← JS view
+#     /usr/libexec/rpcd/luci.isp_recovery                      ← rpcd service
 #     /usr/share/rpcd/acl.d/luci-app-isp-recovery.json         ← ACL
-#     /usr/bin/isp-recover.sh                                  ← unchanged
+#     /usr/share/luci/menu.d/luci-app-isp-recovery.json        ← menu entry
+#     /usr/bin/isp-recover.sh                                   ← unchanged
 
 include $(INCLUDE_DIR)/package.mk
 
@@ -46,8 +41,7 @@ define Package/luci-app-isp-recovery/description
   Supports PPPoE username/password, DHCP, static IPoE, VLAN detection,
   and MAC address cloning.
 
-  v2.0: Migrated from Lua controller + HTM template to modern LuCI JS view
-  with rpcd backend. No Lua dependencies beyond luci-base.
+  v2.1: LuCI JS view with rpcd backend. Corrected view/rpcd/menu paths.
 endef
 
 # ── Post-install: fetch tcpdump + libpcap, restart rpcd ───────────────────
@@ -81,10 +75,14 @@ if ! opkg list-installed | grep -q "^libpcap "; then
 fi
 
 # Ensure rpcd service script is executable
-chmod 755 /usr/libexec/rpcd/isp_recovery
+chmod 755 /usr/libexec/rpcd/luci.isp_recovery
+
+# Remove stale v2.0 files if upgrading
+rm -f /www/luci-static/resources/view/isp-recovery/wizard.js
+rmdir /www/luci-static/resources/view/isp-recovery 2>/dev/null || true
+rm -f /usr/libexec/rpcd/isp_recovery
 
 # Reload rpcd so it picks up the new service + ACL
-# (replaces the old uhttpd + rpcd restart from v1.x)
 /etc/init.d/rpcd reload > /dev/null 2>&1 || /etc/init.d/rpcd restart > /dev/null 2>&1
 
 # Clear LuCI JS cache so the new view is picked up
@@ -146,22 +144,27 @@ define Build/Compile
 endef
 
 define Package/luci-app-isp-recovery/install
-	# ── JS view (replaces Lua controller + HTM template) ──────────────────
-	$(INSTALL_DIR) $(1)/www/luci-static/resources/view/isp-recovery
-	$(INSTALL_DATA) ./htdocs/luci-static/resources/view/isp-recovery/wizard.js \
-		$(1)/www/luci-static/resources/view/isp-recovery/wizard.js
+	# ── JS view — path determines URL: /admin/network/isp_recovery ────────
+	$(INSTALL_DIR) $(1)/www/luci-static/resources/view/network
+	$(INSTALL_DATA) ./htdocs/luci-static/resources/view/network/isp_recovery.js \
+		$(1)/www/luci-static/resources/view/network/isp_recovery.js
 
-	# ── rpcd backend service (replaces Lua action_* functions) ────────────
+	# ── rpcd backend — filename "luci.isp_recovery" = ubus object name ────
 	$(INSTALL_DIR) $(1)/usr/libexec/rpcd
-	$(INSTALL_BIN) ./root/usr/libexec/rpcd/isp_recovery \
-		$(1)/usr/libexec/rpcd/isp_recovery
+	$(INSTALL_BIN) ./root/usr/libexec/rpcd/luci.isp_recovery \
+		$(1)/usr/libexec/rpcd/luci.isp_recovery
 
-	# ── rpcd ACL (grants LuCI session permission to call the service) ──────
+	# ── rpcd ACL (grants LuCI session permission to call the service) ─────
 	$(INSTALL_DIR) $(1)/usr/share/rpcd/acl.d
 	$(INSTALL_DATA) ./root/usr/share/rpcd/acl.d/luci-app-isp-recovery.json \
 		$(1)/usr/share/rpcd/acl.d/luci-app-isp-recovery.json
 
-	# ── Shell capture/analysis script — UNCHANGED from v1.x ───────────────
+	# ── LuCI menu entry — registers route + sidebar item ──────────────────
+	$(INSTALL_DIR) $(1)/usr/share/luci/menu.d
+	$(INSTALL_DATA) ./root/usr/share/luci/menu.d/luci-app-isp-recovery.json \
+		$(1)/usr/share/luci/menu.d/luci-app-isp-recovery.json
+
+	# ── Shell capture/analysis script — UNCHANGED from v1.x ──────────────
 	$(INSTALL_DIR) $(1)/usr/bin
 	$(INSTALL_BIN) ./root/usr/bin/isp-recover.sh \
 		$(1)/usr/bin/isp-recover.sh
