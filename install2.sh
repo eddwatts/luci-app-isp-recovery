@@ -9,7 +9,7 @@
 
 set -e
 
-PLUGIN_DIR="$(cd "$(dirname "$0")" && pwd)"
+PLUGIN_DIR="$(cd "$(dirname "$0")" && pwd)/luci-app-isp-recovery"
 MARKER_DIR="/etc/isp-recovery"
 LUCI_VIEW="/www/luci-static/resources/view/isp-recovery/wizard.js"
 RPCD_SVC="/usr/libexec/rpcd/isp_recovery"
