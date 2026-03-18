@@ -12,7 +12,7 @@ set -e
 PLUGIN_DIR="$(cd "$(dirname "$0")" && pwd)/luci-app-isp-recovery"
 MARKER_DIR="/etc/isp-recovery"
 LUCI_VIEW="/www/luci-static/resources/view/isp-recovery/wizard.js"
-RPCD_SVC="/usr/libexec/rpcd/isp_recovery"
+RPCD_SVC="/usr/libexec/rpcd/luci.isp_recovery"
 RPCD_ACL="/usr/share/rpcd/acl.d/luci-app-isp-recovery.json"
 BACKEND="/usr/bin/isp-recover.sh"
 
@@ -142,7 +142,7 @@ echo "[3/5] Installing plugin files..."
 mkdir -p /www/luci-static/resources/view/isp-recovery
 cp "$PLUGIN_DIR/htdocs/luci-static/resources/view/isp-recovery/wizard.js" "$LUCI_VIEW"
 mkdir -p /usr/libexec/rpcd
-cp "$PLUGIN_DIR/root/usr/libexec/rpcd/isp_recovery" "$RPCD_SVC"
+cp "$PLUGIN_DIR/root/usr/libexec/rpcd/luci.isp_recovery" "$RPCD_SVC"
 chmod +x "$RPCD_SVC"
 mkdir -p /usr/share/rpcd/acl.d
 cp "$PLUGIN_DIR/root/usr/share/rpcd/acl.d/luci-app-isp-recovery.json" "$RPCD_ACL"
