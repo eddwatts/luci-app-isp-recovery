@@ -24,8 +24,8 @@ banner() {
     echo ""
 }
 
-if ! command -v apt > /dev/null 2>&1; then
-    echo "ERROR: apt not found — this script must be run on an OpenWrt router."
+if ! command -v apk > /dev/null 2>&1; then
+    echo "ERROR: apk not found — this script must be run on an OpenWrt router."
     exit 1
 fi
 
@@ -48,8 +48,8 @@ if [ "$1" = "uninstall" ] || [ "$1" = "remove" ]; then
 
     echo "[2/5] Removing tcpdump (if we installed it)..."
     if [ -f "$MARKER_DIR/installed-tcpdump" ]; then
-        apt remove tcpdump && echo "  tcpdump removed." \
-            || echo "  WARNING: could not remove tcpdump — run: apt remove tcpdump"
+        apk remove tcpdump && echo "  tcpdump removed." \
+            || echo "  WARNING: could not remove tcpdump — run: apk remove tcpdump"
         rm -f "$MARKER_DIR/installed-tcpdump"
     else
         echo "  tcpdump was pre-existing — leaving it in place."
@@ -57,16 +57,16 @@ if [ "$1" = "uninstall" ] || [ "$1" = "remove" ]; then
 
     echo "[3/5] Removing libpcap (if we installed it)..."
     if [ -f "$MARKER_DIR/installed-libpcap" ]; then
-        # OpenWrt apt may not support rdepends — skip reverse-dep check, just remove
-        apt remove libpcap && echo "  libpcap removed." \
+        # OpenWrt apk may not support rdepends — skip reverse-dep check, just remove
+        apk remove libpcap && echo "  libpcap removed." \
             || echo "  WARNING: could not remove libpcap."
         rm -f "$MARKER_DIR/installed-libpcap"
     else
         echo "  libpcap was pre-existing — leaving it in place."
     fi
 
-    echo "[4/5] Cleaning up capture files and markers..."
-    rm -f /tmp/isp-capture.pcap \
+    echo "[4/5] Cleaning up capkure files and markers..."
+    rm -f /tmp/isp-capkure.pcap \
           /tmp/isp-results.json \
           /tmp/isp-autotest.json \
           /tmp/isp-recovery.log \
@@ -101,23 +101,23 @@ if command -v tcpdump > /dev/null 2>&1; then
     echo "  tcpdump: already installed (will not be removed on uninstall)"
 else
     echo "  tcpdump: not found — installing..."
-    apt update > /dev/null 2>&1 || echo "  WARNING: apt update failed — trying anyway..."
-    if apt add tcpdump; then
+    apk update > /dev/null 2>&1 || echo "  WARNING: apk update failed — trying anyway..."
+    if apk add tcpdump; then
         touch "$MARKER_DIR/installed-tcpdump"
         echo "  tcpdump: installed ✓ (will be removed on uninstall)"
     else
         echo ""
         echo "  ERROR: Failed to install tcpdump."
         echo "  Ensure the router has internet access, then:"
-        echo "    apt update && apt add tcpdump"
+        echo "    apk update && apk add tcpdump"
         exit 1
     fi
 fi
 
-if apt list --installed 2>/dev/null | grep -q "^libpcap"; then
+if apk list --installed 2>/dev/null | grep -q "^libpcap"; then
     echo "  libpcap: already installed"
 else
-    if apt add libpcap 2>/dev/null; then
+    if apk add libpcap 2>/dev/null; then
         touch "$MARKER_DIR/installed-libpcap"
         echo "  libpcap: installed ✓ (will be removed on uninstall)"
     else
@@ -128,7 +128,7 @@ fi
 echo "[2/5] Checking rpcd dependency..."
 if ! command -v rpcd > /dev/null 2>&1; then
     echo "  rpcd: not found — installing..."
-    if apt add rpcd rpcd-mod-file; then
+    if apk add rpcd rpcd-mod-file; then
         echo "  rpcd: installed ✓"
     else
         echo "  ERROR: Failed to install rpcd — required for v2.0 JS backend."
@@ -179,9 +179,9 @@ echo "  Open LuCI → Network → ISP Recovery"
 echo "  URL: http://192.168.1.1/cgi-bin/luci/admin/network/isp_recovery"
 echo ""
 
-# apt show output format will vary — best effort size display
-TCPDUMP_KB=$(apt show tcpdump 2>/dev/null | awk '/^Installed-Size:/{print int($2)}')
-LIBPCAP_KB=$(apt show libpcap  2>/dev/null | awk '/^Installed-Size:/{print int($2)}')
+# apk show output format will vary — best effort size display
+TCPDUMP_KB=$(apk show tcpdump 2>/dev/null | awk '/^Installed-Size:/{print int($2)}')
+LIBPCAP_KB=$(apk show libpcap  2>/dev/null | awk '/^Installed-Size:/{print int($2)}')
 if [ -n "$TCPDUMP_KB" ]; then
     echo "  Storage: tcpdump (~${TCPDUMP_KB}KB) + libpcap (~${LIBPCAP_KB}KB)"
     echo "  Both will be removed automatically when you uninstall."
