@@ -2,6 +2,7 @@
 'require view';
 'require rpc';
 'require ui';
+'require fs';
 
 /*
  * ISP Credential Recovery Wizard
@@ -376,14 +377,14 @@ return view.extend({
         return E('div', {class: 'isp-hdr'}, [
             E('div', {class: 'isp-logo'}, '🔍'),
             E('div', {class: 'isp-logo-title'}, [
-                E('h1', {text: 'ISP Credential Recovery'}),
-                E('p',  {text: 'CAPTURE • ANALYSE • APPLY — Universal WAN Credential Recovery for OpenWrt'})
+                E('h1', {text: _('ISP Credential Recovery')}),
+                E('p',  {text: _('CAPTURE • ANALYSE • APPLY — Universal WAN Credential Recovery for OpenWrt')})
             ])
         ]);
     },
 
     _buildStepTrack: function() {
-        var steps = ['Detect','Prepare','Connect','Capture','Auto-Test','Results','Apply'];
+        var steps = [_('Detect'),_('Prepare'),_('Connect'),_('Capture'),_('Auto-Test'),_('Results'),_('Apply')];
         var track = E('div', {class: 'step-track', id: 'stepTrack'});
         steps.forEach(function(label, i) {
             var cls = 'step-item' + (i === 0 ? ' active' : '');
@@ -850,17 +851,17 @@ return view.extend({
 
         callSetup(_state.capturePort).then(function() {
             btn.disabled = false;
-            btn.textContent = '🔧 Prepare Port';
+            btn.textContent = _('🔧 Prepare Port');
             if (statusEl) {
                 statusEl.innerHTML =
                     '<span class="sdot green"></span>Port ' + _state.capturePort +
                     ' is DOWN — ISP router will detect cable disconnect';
             }
-            self.log(1, 'Port down ✓ — ready for ISP router connection');
+            self.log(1, _('Port down ✓ — ready for ISP router connection'));
             setTimeout(function() { self.goStep(2); }, 1200);
         }).catch(function(err) {
             btn.disabled = false;
-            btn.textContent = '🔧 Prepare Port';
+            btn.textContent = _('🔧 Prepare Port');
             self.log(1, 'RPC error: ' + err, 'err');
         });
     },
