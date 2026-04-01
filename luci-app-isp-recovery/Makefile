@@ -7,7 +7,7 @@ PKG_MAINTAINER:=Your Name
 PKG_LICENSE:=GPL-2.0
 
 LUCI_TITLE:=ISP Credential Recovery Wizard
-LUCI_DEPENDS:=+luci-base +rpcd +rpcd-mod-file +libubox-jshn
+LUCI_DEPENDS:=+luci-base +rpcd +rpcd-mod-file +jshn
 LUCI_PKGARCH:=all
 
 include $(TOPDIR)/feeds/luci/luci.mk
