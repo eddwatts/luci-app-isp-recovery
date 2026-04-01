@@ -1,0 +1,239 @@
+# This is a POT file for luci-app-isp-recovery translations.
+# Generated from the JS view files.
+# Translators: copy this to po/<lang>/luci-app-isp-recovery.po and fill in msgstr values.
+
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "ISP Recovery"
+msgstr ""
+
+msgid "ISP Credential Recovery"
+msgstr ""
+
+msgid "CAPTURE • ANALYSE • APPLY — Universal WAN Credential Recovery for OpenWrt"
+msgstr ""
+
+msgid "Detect"
+msgstr ""
+
+msgid "Prepare"
+msgstr ""
+
+msgid "Connect"
+msgstr ""
+
+msgid "Capture"
+msgstr ""
+
+msgid "Auto-Test"
+msgstr ""
+
+msgid "Results"
+msgstr ""
+
+msgid "Apply"
+msgstr ""
+
+msgid "🔧 Prepare Port"
+msgstr ""
+
+msgid "Port down ✓ — ready for ISP router connection"
+msgstr ""
+
+msgid "🔌 Connect ISP Router"
+msgstr ""
+
+msgid "📡 Start Capture"
+msgstr ""
+
+msgid "⏱️ Stop Capture"
+msgstr ""
+
+msgid "🧪 Run Auto-Test"
+msgstr ""
+
+msgid "📤 Submit"
+msgstr ""
+
+msgid "🔄 Restore"
+msgstr ""
+
+msgid "🖧 Network Details"
+msgstr ""
+
+msgid "Auth Method"
+msgstr ""
+
+msgid "MAC Address"
+msgstr ""
+
+msgid "For MAC cloning on WAN"
+msgstr ""
+
+msgid "VLAN ID"
+msgstr ""
+
+msgid "802.1Q tag — blank = untagged"
+msgstr ""
+
+msgid "🔐 PPPoE Credentials"
+msgstr ""
+
+msgid "Username"
+msgstr ""
+
+msgid "Password"
+msgstr ""
+
+msgid "Auth Mode"
+msgstr ""
+
+msgid "📡 IP Configuration"
+msgstr ""
+
+msgid "Netmask"
+msgstr ""
+
+msgid "IP Address"
+msgstr ""
+
+msgid "Gateway"
+msgstr ""
+
+msgid "DNS Servers"
+msgstr ""
+
+msgid "not detected"
+msgstr ""
+
+msgid "confidence"
+msgstr ""
+
+msgid "Date / time"
+msgstr ""
+
+msgid "submission timestamp (UTC)"
+msgstr ""
+
+msgid "ISP"
+msgstr ""
+
+msgid "detected from WAN IP"
+msgstr ""
+
+msgid "MAC clone"
+msgstr ""
+
+msgid "MAC address used for successful test"
+msgstr ""
+
+msgid "Attempts"
+msgstr ""
+
+msgid "number of MAC clones tested"
+msgstr ""
+
+msgid "Monitoring for:"
+msgstr ""
+
+msgid "PPPoE authentication (PADI/PADS/CHAP/PAP) &bull; DHCP address assignment &bull; VLAN 802.1Q tags &bull; Static IPoE / ARP announcements &bull; MAC address of ISP router"
+msgstr ""
+
+msgid "Port is DOWN — ISP router will detect cable disconnect"
+msgstr ""
+
+msgid "Port is UP — ISP router will detect cable disconnect"
+msgstr ""
+
+msgid "Waiting for ISP router to connect..."
+msgstr ""
+
+msgid "Capturing traffic..."
+msgstr ""
+
+msgid "Analyzing captured packets..."
+msgstr ""
+
+msgid "Running auto-tests..."
+msgstr ""
+
+msgid "Recovery complete!"
+msgstr ""
+
+msgid "Error"
+msgstr ""
+
+msgid "Warning"
+msgstr ""
+
+msgid "Success"
+msgstr ""
+
+msgid "Information"
+msgstr ""
+
+msgid "Close"
+msgstr ""
+
+msgid "Cancel"
+msgstr ""
+
+msgid "Continue"
+msgstr ""
+
+msgid "Back"
+msgstr ""
+
+msgid "Next"
+msgstr ""
+
+msgid "Finish"
+msgstr ""
+
+msgid "Loading..."
+msgstr ""
+
+msgid "Please wait"
+msgstr ""
+
+msgid "Operation completed successfully"
+msgstr ""
+
+msgid "Operation failed"
+msgstr ""
+
+msgid "Network interface"
+msgstr ""
+
+msgid "Select interface to monitor"
+msgstr ""
+
+msgid "Capture duration"
+msgstr ""
+
+msgid "seconds"
+msgstr ""
+
+msgid "Auto-test enabled"
+msgstr ""
+
+msgid "Run automatic MAC clone tests"
+msgstr ""
+
+msgid "Community database"
+msgstr ""
+
+msgid "Share successful recoveries with community"
+msgstr ""
+
+msgid "Privacy notice"
+msgstr ""
+
+msgid "Only non-sensitive configuration data is shared"
+msgstr ""
+
+msgid "Learn more"
+msgstr ""

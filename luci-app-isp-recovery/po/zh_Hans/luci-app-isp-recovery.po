@@ -1,0 +1,243 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: luci-app-isp-recovery\n"
+"POT-Creation-Date: 2026-03-31 17:00+0800\n"
+"PO-Revision-Date: 2026-03-31 17:00+0800\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: zh_Hans\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+msgid "ISP Recovery"
+msgstr "ISP 恢复"
+
+msgid "ISP Credential Recovery"
+msgstr "ISP 凭据恢复"
+
+msgid "CAPTURE • ANALYSE • APPLY — Universal WAN Credential Recovery for OpenWrt"
+msgstr "捕获 • 分析 • 应用 — OpenWrt 通用 WAN 凭据恢复"
+
+msgid "Detect"
+msgstr "检测"
+
+msgid "Prepare"
+msgstr "准备"
+
+msgid "Connect"
+msgstr "连接"
+
+msgid "Capture"
+msgstr "捕获"
+
+msgid "Auto-Test"
+msgstr "自动测试"
+
+msgid "Results"
+msgstr "结果"
+
+msgid "Apply"
+msgstr "应用"
+
+msgid "🔧 Prepare Port"
+msgstr "🔧 准备端口"
+
+msgid "Port down ✓ — ready for ISP router connection"
+msgstr "端口已断开 ✓ — 准备连接 ISP 路由器"
+
+msgid "🔌 Connect ISP Router"
+msgstr "🔌 连接 ISP 路由器"
+
+msgid "📡 Start Capture"
+msgstr "📡 开始捕获"
+
+msgid "⏱️ Stop Capture"
+msgstr "⏱️ 停止捕获"
+
+msgid "🧪 Run Auto-Test"
+msgstr "🧪 运行自动测试"
+
+msgid "📤 Submit"
+msgstr "📤 提交"
+
+msgid "🔄 Restore"
+msgstr "🔄 恢复"
+
+msgid "🖧 Network Details"
+msgstr "🖧 网络详情"
+
+msgid "Auth Method"
+msgstr "认证方法"
+
+msgid "MAC Address"
+msgstr "MAC 地址"
+
+msgid "For MAC cloning on WAN"
+msgstr "用于 WAN MAC 克隆"
+
+msgid "VLAN ID"
+msgstr "VLAN ID"
+
+msgid "802.1Q tag — blank = untagged"
+msgstr "802.1Q 标签 — 空白表示未标记"
+
+msgid "🔐 PPPoE Credentials"
+msgstr "🔐 PPPoE 凭据"
+
+msgid "Username"
+msgstr "用户名"
+
+msgid "Password"
+msgstr "密码"
+
+msgid "Auth Mode"
+msgstr "认证模式"
+
+msgid "📡 IP Configuration"
+msgstr "📡 IP 配置"
+
+msgid "Netmask"
+msgstr "子网掩码"
+
+msgid "IP Address"
+msgstr "IP 地址"
+
+msgid "Gateway"
+msgstr "网关"
+
+msgid "DNS Servers"
+msgstr "DNS 服务器"
+
+msgid "not detected"
+msgstr "未检测到"
+
+msgid "confidence"
+msgstr "置信度"
+
+msgid "Date / time"
+msgstr "日期 / 时间"
+
+msgid "submission timestamp (UTC)"
+msgstr "提交时间戳 (UTC)"
+
+msgid "ISP"
+msgstr "ISP"
+
+msgid "detected from WAN IP"
+msgstr "从 WAN IP 检测"
+
+msgid "MAC clone"
+msgstr "MAC 克隆"
+
+msgid "MAC address used for successful test"
+msgstr "成功测试使用的 MAC 地址"
+
+msgid "Attempts"
+msgstr "尝试次数"
+
+msgid "number of MAC clones tested"
+msgstr "测试的 MAC 克隆数量"
+
+msgid "Monitoring for:"
+msgstr "监控内容："
+
+msgid "PPPoE authentication (PADI/PADS/CHAP/PAP) &bull; DHCP address assignment &bull; VLAN 802.1Q tags &bull; Static IPoE / ARP announcements &bull; MAC address of ISP router"
+msgstr "PPPoE 认证 (PADI/PADS/CHAP/PAP) • DHCP 地址分配 • VLAN 802.1Q 标签 • 静态 IPoE / ARP 公告 • ISP 路由器的 MAC 地址"
+
+msgid "Port is DOWN — ISP router will detect cable disconnect"
+msgstr "端口已断开 — ISP 路由器将检测到网线断开"
+
+msgid "Port is UP — ISP router will detect cable disconnect"
+msgstr "端口已连接 — ISP 路由器将检测到网线断开"
+
+msgid "Waiting for ISP router to connect..."
+msgstr "等待 ISP 路由器连接..."
+
+msgid "Capturing traffic..."
+msgstr "正在捕获流量..."
+
+msgid "Analyzing captured packets..."
+msgstr "正在分析捕获的数据包..."
+
+msgid "Running auto-tests..."
+msgstr "正在运行自动测试..."
+
+msgid "Recovery complete!"
+msgstr "恢复完成！"
+
+msgid "Error"
+msgstr "错误"
+
+msgid "Warning"
+msgstr "警告"
+
+msgid "Success"
+msgstr "成功"
+
+msgid "Information"
+msgstr "信息"
+
+msgid "Close"
+msgstr "关闭"
+
+msgid "Cancel"
+msgstr "取消"
+
+msgid "Continue"
+msgstr "继续"
+
+msgid "Back"
+msgstr "返回"
+
+msgid "Next"
+msgstr "下一步"
+
+msgid "Finish"
+msgstr "完成"
+
+msgid "Loading..."
+msgstr "加载中..."
+
+msgid "Please wait"
+msgstr "请稍候"
+
+msgid "Operation completed successfully"
+msgstr "操作成功完成"
+
+msgid "Operation failed"
+msgstr "操作失败"
+
+msgid "Network interface"
+msgstr "网络接口"
+
+msgid "Select interface to monitor"
+msgstr "选择要监控的接口"
+
+msgid "Capture duration"
+msgstr "捕获持续时间"
+
+msgid "seconds"
+msgstr "秒"
+
+msgid "Auto-test enabled"
+msgstr "启用自动测试"
+
+msgid "Run automatic MAC clone tests"
+msgstr "运行自动 MAC 克隆测试"
+
+msgid "Community database"
+msgstr "社区数据库"
+
+msgid "Share successful recoveries with community"
+msgstr "与社区分享成功的恢复结果"
+
+msgid "Privacy notice"
+msgstr "隐私声明"
+
+msgid "Only non-sensitive configuration data is shared"
+msgstr "只分享非敏感配置数据"
+
+msgid "Learn more"
+msgstr "了解更多"
